@@ -1,0 +1,15 @@
+# Local study notes and generated documents
+*.md
+!README.md
+*.pdf
+output/
+tmp/
+
+# Local note-generation helpers
+tools/build_final_notes_pdf.py
+tools/build_safety_watchdog_pdf.py
+
+# Python cache
+__pycache__/
+*.py[cod]
+

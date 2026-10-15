@@ -4,19 +4,19 @@
 #include "system.h"
 
 //Parameter structure of robot
-//»úÆ÷ÈË²ÎÊı½á¹¹Ìå
+//æœºå™¨äººå‚æ•°ç»“æ„ä½“
 typedef struct  
 {
-  float WheelSpacing;      //Wheelspacing, Mec_Car is half wheelspacing //ÂÖ¾à ÂóÂÖ³µÎª°ëÂÖ¾à
-  float AxleSpacing;       //Axlespacing, Mec_Car is half axlespacing //Öá¾à ÂóÂÖ³µÎª°ëÖá¾à	
-  int GearRatio;           //Motor_gear_ratio //µç»ú¼õËÙ±È
-  int EncoderAccuracy;     //Number_of_encoder_lines //±àÂëÆ÷¾«¶È(±àÂëÆ÷ÏßÊı)
-  float WheelDiameter;     //Diameter of driving wheel //Ö÷¶¯ÂÖÖ±¾¶	
-  float OmniTurnRadiaus;   //Rotation radius of omnidirectional trolley //È«ÏòÂÖĞ¡³µĞı×ª°ë¾¶	
+  float WheelSpacing;      //Wheelspacing, Mec_Car is half wheelspacing //è½®è· éº¦è½®è½¦ä¸ºåŠè½®è·
+  float AxleSpacing;       //Axlespacing, Mec_Car is half axlespacing //è½´è· éº¦è½®è½¦ä¸ºåŠè½´è·	
+  int GearRatio;           //Motor_gear_ratio //ç”µæœºå‡é€Ÿæ¯”
+  int EncoderAccuracy;     //Number_of_encoder_lines //ç¼–ç å™¨ç²¾åº¦(ç¼–ç å™¨çº¿æ•°)
+  float WheelDiameter;     //Diameter of driving wheel //ä¸»åŠ¨è½®ç›´å¾„	
+  float OmniTurnRadiaus;   //Rotation radius of omnidirectional trolley //å…¨å‘è½®å°è½¦æ—‹è½¬åŠå¾„	
 }Robot_Parament_InitTypeDef;
 
 // Encoder structure
-//±àÂëÆ÷½á¹¹Ìå
+//ç¼–ç å™¨ç»“æ„ä½“
 typedef struct  
 {
   int A;      
@@ -27,20 +27,20 @@ typedef struct
 
 //The minimum turning radius of Ackermann models is determined by the mechanical structure: 
 //the maximum Angle of the wheelbase, wheelbase and front wheels
-//°¢¿ËÂü³µĞÍµÄ×îĞ¡×ªÍä°ë¾¶£¬ÓÉ»úĞµ½á¹¹¾ö¶¨£ºÂÖ¾à¡¢Öá¾à¡¢Ç°ÂÖ×î´ó×ª½Ç
+//é˜¿å…‹æ›¼è½¦å‹çš„æœ€å°è½¬å¼¯åŠå¾„ï¼Œç”±æœºæ¢°ç»“æ„å†³å®šï¼šè½®è·ã€è½´è·ã€å‰è½®æœ€å¤§è½¬è§’
 #define MINI_AKM_MIN_TURN_RADIUS 0.350f 
 
 //Wheelspacing, Mec_Car is half wheelspacing
-//ÂÖ¾à ÂóÂÖÊÇÒ»°ë
+//è½®è· éº¦è½®æ˜¯ä¸€åŠ
 //#define MEC_wheelspacing         0.109
-#define MEC_wheelspacing         0.0930 //ĞŞÕı2021.03.30
+#define MEC_wheelspacing         0.0930 //ä¿®æ­£2021.03.30
 #define Akm_wheelspacing         0.162f
 #define Diff_wheelSpacing        0.177f
 #define Four_Mortor_wheelSpacing 0.187f
 #define Tank_wheelSpacing        0.235f
 
 //Axlespacing, Mec_Car is half axlespacing
-//Öá¾à ÂóÂÖÊÇÒ»°ë
+//è½´è· éº¦è½®æ˜¯ä¸€åŠ
 #define MEC_axlespacing           0.085
 #define Akm_axlespacing           0.144f
 #define Diff_axlespacing          0.155f
@@ -48,7 +48,7 @@ typedef struct
 #define Tank_axlespacing          0.222f
 
 //Motor_gear_ratio
-//µç»ú¼õËÙ±È
+//ç”µæœºå‡é€Ÿæ¯”
 #define   HALL_30F    30
 #define   MD36N_5_18  5.18
 #define   MD36N_27    27
@@ -58,12 +58,12 @@ typedef struct
 #define   MD60N_47    47
 
 //Number_of_encoder_lines
-//±àÂëÆ÷¾«¶È
+//ç¼–ç å™¨ç²¾åº¦
 #define		Photoelectric_500 500
 #define	  Hall_13           13
 
 //Mecanum wheel tire diameter series
-//ÂóÂÖÂÖÌ¥Ö±¾¶
+//éº¦è½®è½®èƒç›´å¾„
 #define		Mecanum_60  0.060f
 #define		Mecanum_75  0.075f
 #define		Mecanum_100 0.100f
@@ -71,7 +71,7 @@ typedef struct
 #define		Mecanum_152 0.152f
  
 //Omni wheel tire diameter series
-//ÂÖ¾¶È«ÏòÂÖÖ±¾¶ÏµÁĞ
+//è½®å¾„å…¨å‘è½®ç›´å¾„ç³»åˆ—
 #define	  FullDirecion_60  0.060
 #define	  FullDirecion_75  0.075
 #define	  FullDirecion_127 0.127
@@ -80,26 +80,26 @@ typedef struct
 #define	  FullDirecion_217 0.217
 
 //Black tire, tank_car wheel diameter
-//ºÚÉ«ÂÖÌ¥¡¢ÂÄ´ø³µÂÖÖ±¾¶
+//é»‘è‰²è½®èƒã€å±¥å¸¦è½¦è½®ç›´å¾„
 #define	  Black_WheelDiameter   0.065
 //#define	  Tank_WheelDiameter 0.047
 #define	  Tank_WheelDiameter 0.043
 
 //Rotation radius of omnidirectional trolley
-//È«ÏòÂÖĞ¡³µĞı×ª°ë¾¶
+//å…¨å‘è½®å°è½¦æ—‹è½¬åŠå¾„
 #define   Omni_Turn_Radiaus_109 0.109
 #define   Omni_Turn_Radiaus_164 0.164
 #define   Omni_Turn_Radiaus_180 0.180
 #define   Omni_Turn_Radiaus_290 0.290
 
 //The encoder octave depends on the encoder initialization Settings
-//±àÂëÆ÷±¶ÆµÊı£¬È¡¾öÓÚ±àÂëÆ÷³õÊ¼»¯ÉèÖÃ
+//ç¼–ç å™¨å€é¢‘æ•°ï¼Œå–å†³äºç¼–ç å™¨åˆå§‹åŒ–è®¾ç½®
 #define   EncoderMultiples  4
 //Encoder data reading frequency
-//±àÂëÆ÷Êı¾İ¶ÁÈ¡ÆµÂÊ
+//ç¼–ç å™¨æ•°æ®è¯»å–é¢‘ç‡
 #define   CONTROL_FREQUENCY 100
 
-//#define PI 3.1415f  //PI //Ô²ÖÜÂÊ
+//#define PI 3.1415f  //PI //åœ†å‘¨ç‡
 
 void Robot_Select(void);
 void Robot_Init(double wheelspacing, float axlespacing, float omni_turn_radiaus, float gearratio,float Accuracy,float tyre_diameter);

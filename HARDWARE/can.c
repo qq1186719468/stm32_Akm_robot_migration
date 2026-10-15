@@ -2,22 +2,22 @@
 #include "system.h"
 /**************************************************************************
 Function: CAN1 initialization
-Input   : tsjw£ºResynchronize the jump time unit, Scope: 1 ~ 3;
- 			    tbs2£ºTime unit of time period 2, range :1~8;
- 			    tbs1£ºTime unit of time period 1, range :1~16;
- 			    brp £ºBaud rate divider, range :1 to 1024;(We're actually going to add 1, which is 1 to 1024) tq=(brp)*tpclk1
- 			    mode£º0, normal mode;1. Loop mode;
+Input   : tsjwï¼šResynchronize the jump time unit, Scope: 1 ~ 3;
+ 			    tbs2ï¼šTime unit of time period 2, range :1~8;
+ 			    tbs1ï¼šTime unit of time period 1, range :1~16;
+ 			    brp ï¼šBaud rate divider, range :1 to 1024;(We're actually going to add 1, which is 1 to 1024) tq=(brp)*tpclk1
+ 			    modeï¼š0, normal mode;1. Loop mode;
 Output  : 0- Initialization successful;Other - initialization failed
 Note: none of the entry parameters (except mode) can be 0
-º¯Êı¹¦ÄÜ£ºCAN1³õÊ¼»¯
-Èë¿Ú²ÎÊı£ºtsjw£ºÖØĞÂÍ¬²½ÌøÔ¾Ê±¼äµ¥Ôª£¬·¶Î§:1~3;
- 			    tbs2£ºÊ±¼ä¶Î2µÄÊ±¼äµ¥Ôª£¬·¶Î§:1~8;
- 			    tbs1£ºÊ±¼ä¶Î1µÄÊ±¼äµ¥Ôª£¬·¶Î§:1~16;
- 			    brp £º²¨ÌØÂÊ·ÖÆµÆ÷£¬·¶Î§:1~1024;(Êµ¼ÊÒª¼Ó1,Ò²¾ÍÊÇ1~1024) tq=(brp)*tpclk1
- 			    mode£º0,ÆÕÍ¨Ä£Ê½;1,»Ø»·Ä£Ê½;
-·µ»Ø  Öµ£º0-³õÊ¼»¯³É¹¦; ÆäËû-³õÊ¼»¯Ê§°Ü
-×¢Òâ£ºÈë¿Ú²ÎÊı(³ıÁËmode)¾ù²»ÄÜÎª0
-²¨ÌØÂÊ/Baud rate=Fpclk1/((tbs1+tbs2+1)*brp)£¬Fpclk1Îª36M
+å‡½æ•°åŠŸèƒ½ï¼šCAN1åˆå§‹åŒ–
+å…¥å£å‚æ•°ï¼štsjwï¼šé‡æ–°åŒæ­¥è·³è·ƒæ—¶é—´å•å…ƒï¼ŒèŒƒå›´:1~3;
+ 			    tbs2ï¼šæ—¶é—´æ®µ2çš„æ—¶é—´å•å…ƒï¼ŒèŒƒå›´:1~8;
+ 			    tbs1ï¼šæ—¶é—´æ®µ1çš„æ—¶é—´å•å…ƒï¼ŒèŒƒå›´:1~16;
+ 			    brp ï¼šæ³¢ç‰¹ç‡åˆ†é¢‘å™¨ï¼ŒèŒƒå›´:1~1024;(å®é™…è¦åŠ 1,ä¹Ÿå°±æ˜¯1~1024) tq=(brp)*tpclk1
+ 			    modeï¼š0,æ™®é€šæ¨¡å¼;1,å›ç¯æ¨¡å¼;
+è¿”å›  å€¼ï¼š0-åˆå§‹åŒ–æˆåŠŸ; å…¶ä»–-åˆå§‹åŒ–å¤±è´¥
+æ³¨æ„ï¼šå…¥å£å‚æ•°(é™¤äº†mode)å‡ä¸èƒ½ä¸º0
+æ³¢ç‰¹ç‡/Baud rate=Fpclk1/((tbs1+tbs2+1)*brp)ï¼ŒFpclk1ä¸º36M
                 =42M/((3+2+1)*6)
 						    =1M
 **************************************************************************/
@@ -27,125 +27,125 @@ u8 CAN1_Mode_Init(u8 tsjw,u8 tbs2,u8 tbs1,u16 brp,u8 mode)
 	NVIC_InitTypeDef NVIC_InitStructure;
 	u16 i=0;
  	if(tsjw==0||tbs2==0||tbs1==0||brp==0)return 1;
-	tsjw-=1; //Subtract 1 before setting //ÏÈ¼õÈ¥1.ÔÙÓÃÓÚÉèÖÃ
+	tsjw-=1; //Subtract 1 before setting //å…ˆå‡å»1.å†ç”¨äºè®¾ç½®
 	tbs2-=1;
 	tbs1-=1;
 	brp-=1;
 
-	//Ê¹ÄÜÏà¹ØÊ±ÖÓ
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);//Ê¹ÄÜPORTBÊ±ÖÓ	                   											 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN1, ENABLE);//Ê¹ÄÜCAN1Ê±ÖÓ	
-	//³õÊ¼»¯GPIO
+	//ä½¿èƒ½ç›¸å…³æ—¶é’Ÿ
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);//ä½¿èƒ½PORTBæ—¶é’Ÿ	                   											 
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN1, ENABLE);//ä½¿èƒ½CAN1æ—¶é’Ÿ	
+	//åˆå§‹åŒ–GPIO
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0| GPIO_Pin_1;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//¸´ÓÃ¹¦ÄÜ
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//ÍÆÍìÊä³ö
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//å¤ç”¨åŠŸèƒ½
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//æ¨æŒ½è¾“å‡º
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100MHz
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;//ÉÏÀ­
-	GPIO_Init(GPIOD, &GPIO_InitStructure);//³õÊ¼»¯PB8 PB9
-//	//Òı½Å¸´ÓÃÓ³ÉäÅäÖÃ
-	GPIO_PinAFConfig(GPIOD,GPIO_PinSource0,GPIO_AF_CAN1); //GPIOB8¸´ÓÃÎªCAN1
-	GPIO_PinAFConfig(GPIOD,GPIO_PinSource1,GPIO_AF_CAN1); //GPIOB9¸´ÓÃÎªCAN1
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;//ä¸Šæ‹‰
+	GPIO_Init(GPIOD, &GPIO_InitStructure);//åˆå§‹åŒ–PB8 PB9
+//	//å¼•è„šå¤ç”¨æ˜ å°„é…ç½®
+	GPIO_PinAFConfig(GPIOD,GPIO_PinSource0,GPIO_AF_CAN1); //GPIOB8å¤ç”¨ä¸ºCAN1
+	GPIO_PinAFConfig(GPIOD,GPIO_PinSource1,GPIO_AF_CAN1); //GPIOB9å¤ç”¨ä¸ºCAN1
 
-	CAN1->MCR=0x0000;	//Exit sleep mode (setting all bits to 0 at the same time) //ÍË³öË¯ÃßÄ£Ê½(Í¬Ê±ÉèÖÃËùÓĞÎ»Îª0)
-	CAN1->MCR|=1<<0;	//Request CAN1 to enter initialization mode //ÇëÇóCAN1½øÈë³õÊ¼»¯Ä£Ê½
+	CAN1->MCR=0x0000;	//Exit sleep mode (setting all bits to 0 at the same time) //é€€å‡ºç¡çœ æ¨¡å¼(åŒæ—¶è®¾ç½®æ‰€æœ‰ä½ä¸º0)
+	CAN1->MCR|=1<<0;	//Request CAN1 to enter initialization mode //è¯·æ±‚CAN1è¿›å…¥åˆå§‹åŒ–æ¨¡å¼
 	while((CAN1->MSR&1<<0)==0)
 	{
 		i++;
-		if(i>100)return 2; //Failed to enter initialization mode //½øÈë³õÊ¼»¯Ä£Ê½Ê§°Ü
+		if(i>100)return 2; //Failed to enter initialization mode //è¿›å…¥åˆå§‹åŒ–æ¨¡å¼å¤±è´¥
 	}
 	//Non-time triggered communication mode
-	//·ÇÊ±¼ä´¥·¢Í¨ĞÅÄ£Ê½
+	//éæ—¶é—´è§¦å‘é€šä¿¡æ¨¡å¼
 	CAN1->MCR|=0<<7;
   //Software automatic offline management	
-	//Èí¼ş×Ô¶¯ÀëÏß¹ÜÀí
+	//è½¯ä»¶è‡ªåŠ¨ç¦»çº¿ç®¡ç†
 	CAN1->MCR|=0<<6;	
 	//Sleep mode is awakened by software (clear CAN1- >;
-  //Ë¯ÃßÄ£Ê½Í¨¹ıÈí¼ş»½ĞÑ(Çå³ıCAN1->MCRµÄSLEEPÎ»)	
+  //ç¡çœ æ¨¡å¼é€šè¿‡è½¯ä»¶å”¤é†’(æ¸…é™¤CAN1->MCRçš„SLEEPä½)	
 	CAN1->MCR|=0<<5;
 	//Disallow automatic message transmission
-  //½ûÖ¹±¨ÎÄ×Ô¶¯´«ËÍ	
+  //ç¦æ­¢æŠ¥æ–‡è‡ªåŠ¨ä¼ é€	
 	CAN1->MCR|=1<<4;
 	//Messages are not locked, the new overwrites the old
-  //±¨ÎÄ²»Ëø¶¨,ĞÂµÄ¸²¸Ç¾ÉµÄ	
+  //æŠ¥æ–‡ä¸é”å®š,æ–°çš„è¦†ç›–æ—§çš„	
 	CAN1->MCR|=0<<3;
 	//The priority is determined by the message identifier	
-  //ÓÅÏÈ¼¶ÓÉ±¨ÎÄ±êÊ¶·û¾ö¶¨  
+  //ä¼˜å…ˆçº§ç”±æŠ¥æ–‡æ ‡è¯†ç¬¦å†³å®š  
 	CAN1->MCR|=0<<2;
   //Clear the original Settings	
-  //Çå³ıÔ­À´µÄÉèÖÃ	
+  //æ¸…é™¤åŸæ¥çš„è®¾ç½®	
 	CAN1->BTR=0x00000000; 
 	//Mode set to 0, normal mode;1. Loop mode;
-	//Ä£Ê½ÉèÖÃ 0,ÆÕÍ¨Ä£Ê½;1,»Ø»·Ä£Ê½;
+	//æ¨¡å¼è®¾ç½® 0,æ™®é€šæ¨¡å¼;1,å›ç¯æ¨¡å¼;
 	CAN1->BTR|=mode<<30;
   //Resynchronization jump width (TSJW) is TSJW +1 time unit	
-	//ÖØĞÂÍ¬²½ÌøÔ¾¿í¶È(Tsjw)Îªtsjw+1¸öÊ±¼äµ¥Î»
+	//é‡æ–°åŒæ­¥è·³è·ƒå®½åº¦(Tsjw)ä¸ºtsjw+1ä¸ªæ—¶é—´å•ä½
 	CAN1->BTR|=tsjw<<24; 
   //Tbs2= Tbs2 +1 time unit	
-	//Tbs2=tbs2+1¸öÊ±¼äµ¥Î»
+	//Tbs2=tbs2+1ä¸ªæ—¶é—´å•ä½
 	CAN1->BTR|=tbs2<<20; 
 	//Tbs1= Tbs1 +1 time unit	
-  //Tbs1=tbs1+1¸öÊ±¼äµ¥Î»	
+  //Tbs1=tbs1+1ä¸ªæ—¶é—´å•ä½	
 	CAN1->BTR|=tbs1<<16;
 	//Frequency division coefficient (Fdiv) is brp +1, boulder rate: Fpclk1/((Tbs1+Tbs2+1)*Fdiv)
-  //·ÖÆµÏµÊı(Fdiv)Îªbrp+1£¬²¨ÌØÂÊ:Fpclk1/((Tbs1+Tbs2+1)*Fdiv)
+  //åˆ†é¢‘ç³»æ•°(Fdiv)ä¸ºbrp+1ï¼Œæ³¢ç‰¹ç‡:Fpclk1/((Tbs1+Tbs2+1)*Fdiv)
 	CAN1->BTR|=brp<<0;  
   //Request CAN1 to exit initialization mode	
-  //ÇëÇóCAN1ÍË³ö³õÊ¼»¯Ä£Ê½			
+  //è¯·æ±‚CAN1é€€å‡ºåˆå§‹åŒ–æ¨¡å¼			
 	CAN1->MCR&=~(1<<0);	  
 	while((CAN1->MSR&1<<0)==1)
 	{
 		i++;
-		if(i>0XFFF0)return 3; //Failed to exit initialization mode //ÍË³ö³õÊ¼»¯Ä£Ê½Ê§°Ü
+		if(i>0XFFF0)return 3; //Failed to exit initialization mode //é€€å‡ºåˆå§‹åŒ–æ¨¡å¼å¤±è´¥
 	}
-	/*** Filter initialization || ¹ıÂËÆ÷³õÊ¼»¯ ***/
+	/*** Filter initialization || è¿‡æ»¤å™¨åˆå§‹åŒ– ***/
 	//Filter groups work in initialization mode
-	//¹ıÂËÆ÷×é¹¤×÷ÔÚ³õÊ¼»¯Ä£Ê½
+	//è¿‡æ»¤å™¨ç»„å·¥ä½œåœ¨åˆå§‹åŒ–æ¨¡å¼
 	CAN1->FMR|=1<<0;	
 	//Filter 0 is not active
-  //¹ıÂËÆ÷0²»¼¤»î	
+  //è¿‡æ»¤å™¨0ä¸æ¿€æ´»	
 	CAN1->FA1R&=~(1<<0);	
 	//The filter bit width is 32 bits
-  //¹ıÂËÆ÷Î»¿íÎª32Î»	
+  //è¿‡æ»¤å™¨ä½å®½ä¸º32ä½	
 	CAN1->FS1R|=1<<0; 
 	//Filter 0 works in identifier masking bit mode
-  //¹ıÂËÆ÷0¹¤×÷ÔÚ±êÊ¶·ûÆÁ±ÎÎ»Ä£Ê½	
+  //è¿‡æ»¤å™¨0å·¥ä½œåœ¨æ ‡è¯†ç¬¦å±è”½ä½æ¨¡å¼	
 	CAN1->FM1R|=0<<0;	
 	//Filter 0 is associated with FIFO0
-  //¹ıÂËÆ÷0¹ØÁªµ½FIFO0	
+  //è¿‡æ»¤å™¨0å…³è”åˆ°FIFO0	
 	CAN1->FFA1R|=0<<0;	
   //32 bit ID	
-	//32Î»ID
+	//32ä½ID
 	CAN1->sFilterRegister[0].FR1=0X00000000;
 	//32-bit MASK
-	//32Î»MASK
+	//32ä½MASK
 	CAN1->sFilterRegister[0].FR2=0X00000000;
 	//Activation filter 0
-	//¼¤»î¹ıÂËÆ÷0
+	//æ¿€æ´»è¿‡æ»¤å™¨0
 	CAN1->FA1R|=1<<0;	
 	//Filter group enters normal mode
-  //¹ıÂËÆ÷×é½øÈëÕı³£Ä£Ê½	
+  //è¿‡æ»¤å™¨ç»„è¿›å…¥æ­£å¸¸æ¨¡å¼	
 	CAN1->FMR&=0<<0;			
 
 #if CAN1_RX0_INT_ENABLE
-  //Enable to interrupt reception //Ê¹ÄÜÖĞ¶Ï½ÓÊÕ
+  //Enable to interrupt reception //ä½¿èƒ½ä¸­æ–­æ¥æ”¶
 	
-	//FIFO0ÏûÏ¢¹ÒºÅÖĞ¶ÏÔÊĞí
+	//FIFO0æ¶ˆæ¯æŒ‚å·ä¸­æ–­å…è®¸
 	CAN1->IER|=1<<1;			
 	
 	//Configure CAN to receive interrupts
-	//ÅäÖÃCAN½ÓÊÕÖĞ¶Ï
+	//é…ç½®CANæ¥æ”¶ä¸­æ–­
   NVIC_InitStructure.NVIC_IRQChannel = CAN1_RX0_IRQn;
   //Preemption priority	
-	//ÇÀÕ¼ÓÅÏÈ¼¶
+	//æŠ¢å ä¼˜å…ˆçº§
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1 ;
 	//Son priority
-	//×ÓÓÅÏÈ¼¶
+	//å­ä¼˜å…ˆçº§
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
   //IRQ channel enablement
-	//IRQÍ¨µÀÊ¹ÄÜ	
+	//IRQé€šé“ä½¿èƒ½	
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;	
   //Initializes the VIC register according to the specified parameters 
-	//¸ù¾İÖ¸¶¨µÄ²ÎÊı³õÊ¼»¯VIC¼Ä´æÆ÷	
+	//æ ¹æ®æŒ‡å®šçš„å‚æ•°åˆå§‹åŒ–VICå¯„å­˜å™¨	
 	NVIC_Init(&NVIC_InitStructure);	
 
   CAN_ITConfig(CAN1, CAN_IT_FMP0, ENABLE);
@@ -161,40 +161,40 @@ Input   : id:Standard ID(11 bits)/ Extended ID(11 bits +18 bits)
 			    len:Length of data to be sent (fixed at 8 bytes, valid data is 6 bytes in time-triggered mode) 
 			    *dat:Pointer to the data
 Output  : 0~3, mailbox number. 0xFF, no valid mailbox
-º¯Êı¹¦ÄÜ£ºCAN·¢ËÍÊı¾İ
-Èë¿Ú²ÎÊı£ºid:±ê×¼ID(11Î»)/À©Õ¹ID(11Î»+18Î»)	    
-			    ide:0,±ê×¼Ö¡;1,À©Õ¹Ö¡
-			    rtr:0,Êı¾İÖ¡;1,Ô¶³ÌÖ¡
-			    len:Òª·¢ËÍµÄÊı¾İ³¤¶È(¹Ì¶¨Îª8¸ö×Ö½Ú,ÔÚÊ±¼ä´¥·¢Ä£Ê½ÏÂ,ÓĞĞ§Êı¾İÎª6¸ö×Ö½Ú)
-			    *dat:Êı¾İÖ¸Õë.
-·µ»Ø  Öµ£º0~3,ÓÊÏä±àºÅ.0XFF,ÎŞÓĞĞ§ÓÊÏä
+å‡½æ•°åŠŸèƒ½ï¼šCANå‘é€æ•°æ®
+å…¥å£å‚æ•°ï¼šid:æ ‡å‡†ID(11ä½)/æ‰©å±•ID(11ä½+18ä½)	    
+			    ide:0,æ ‡å‡†å¸§;1,æ‰©å±•å¸§
+			    rtr:0,æ•°æ®å¸§;1,è¿œç¨‹å¸§
+			    len:è¦å‘é€çš„æ•°æ®é•¿åº¦(å›ºå®šä¸º8ä¸ªå­—èŠ‚,åœ¨æ—¶é—´è§¦å‘æ¨¡å¼ä¸‹,æœ‰æ•ˆæ•°æ®ä¸º6ä¸ªå­—èŠ‚)
+			    *dat:æ•°æ®æŒ‡é’ˆ.
+è¿”å›  å€¼ï¼š0~3,é‚®ç®±ç¼–å·.0XFF,æ— æœ‰æ•ˆé‚®ç®±
 **************************************************************************/
 u8 CAN1_Tx_Msg(u32 id,u8 ide,u8 rtr,u8 len,u8 *dat)
 {	   
 	u8 mbox;	  
-	if(CAN1->TSR&(1<<26))mbox=0;		  //Mailbox 0 is empty //ÓÊÏä0Îª¿Õ
-	else if(CAN1->TSR&(1<<27))mbox=1;	//Mailbox 1 is empty //ÓÊÏä1Îª¿Õ
-	else if(CAN1->TSR&(1<<28))mbox=2;	//Mailbox 2 is empty //ÓÊÏä2Îª¿Õ
-	else return 0XFF;					        //No empty mailbox, cannot send //ÎŞ¿ÕÓÊÏä,ÎŞ·¨·¢ËÍ 
+	if(CAN1->TSR&(1<<26))mbox=0;		  //Mailbox 0 is empty //é‚®ç®±0ä¸ºç©º
+	else if(CAN1->TSR&(1<<27))mbox=1;	//Mailbox 1 is empty //é‚®ç®±1ä¸ºç©º
+	else if(CAN1->TSR&(1<<28))mbox=2;	//Mailbox 2 is empty //é‚®ç®±2ä¸ºç©º
+	else return 0XFF;					        //No empty mailbox, cannot send //æ— ç©ºé‚®ç®±,æ— æ³•å‘é€ 
 	
-	CAN1->sTxMailBox[mbox].TIR=0; //Clear the previous Settings //Çå³ıÖ®Ç°µÄÉèÖÃ		
-	if(ide==0) //The standard frame //±ê×¼Ö¡
+	CAN1->sTxMailBox[mbox].TIR=0; //Clear the previous Settings //æ¸…é™¤ä¹‹å‰çš„è®¾ç½®		
+	if(ide==0) //The standard frame //æ ‡å‡†å¸§
 	{
-		id&=0x7ff; //Take the low 11 bit STDID //È¡µÍ11Î»stdid
+		id&=0x7ff; //Take the low 11 bit STDID //å–ä½11ä½stdid
 		id<<=21;		  
-	}else	//Extend the frame //À©Õ¹Ö¡
+	}else	//Extend the frame //æ‰©å±•å¸§
 	{
-		id&=0X1FFFFFFF; //Take a low 32-bit extid //È¡µÍ32Î»extid
+		id&=0X1FFFFFFF; //Take a low 32-bit extid //å–ä½32ä½extid
 		id<<=3;									   
 	}
 	CAN1->sTxMailBox[mbox].TIR|=id;		 
 	CAN1->sTxMailBox[mbox].TIR|=ide<<2;	  
 	CAN1->sTxMailBox[mbox].TIR|=rtr<<1;
-	len&=0X0F; //Get lower 4 bits //µÃµ½µÍËÄÎ»
+	len&=0X0F; //Get lower 4 bits //å¾—åˆ°ä½å››ä½
 	CAN1->sTxMailBox[mbox].TDTR&=~(0X0000000F);
-	CAN1->sTxMailBox[mbox].TDTR|=len;	//Set the DLC	//ÉèÖÃDLC
+	CAN1->sTxMailBox[mbox].TDTR|=len;	//Set the DLC	//è®¾ç½®DLC
 	//The data to be sent is stored in the mailbox
-	//´ı·¢ËÍÊı¾İ´æÈëÓÊÏä
+	//å¾…å‘é€æ•°æ®å­˜å…¥é‚®ç®±
 	CAN1->sTxMailBox[mbox].TDHR=(((u32)dat[7]<<24)|
 								((u32)dat[6]<<16)|
  								((u32)dat[5]<<8)|
@@ -203,16 +203,16 @@ u8 CAN1_Tx_Msg(u32 id,u8 ide,u8 rtr,u8 len,u8 *dat)
 								((u32)dat[2]<<16)|
  								((u32)dat[1]<<8)|
 								((u32)dat[0]));
-	CAN1->sTxMailBox[mbox].TIR|=1<<0; //Request to send mailbox data//ÇëÇó·¢ËÍÓÊÏäÊı¾İ
+	CAN1->sTxMailBox[mbox].TIR|=1<<0; //Request to send mailbox data//è¯·æ±‚å‘é€é‚®ç®±æ•°æ®
 	return mbox;
 }
 /**************************************************************************
 Function: Get the send status
 Input   : Mbox: mailbox number
 Output  : 0, hang;0X05, send failed;0X07, successful transmission
-º¯Êı¹¦ÄÜ£º»ñµÃ·¢ËÍ×´Ì¬
-Èë¿Ú²ÎÊı£ºmbox£ºÓÊÏä±àºÅ
-·µ»Ø  Öµ£º0,¹ÒÆğ;0X05,·¢ËÍÊ§°Ü;0X07,·¢ËÍ³É¹¦
+å‡½æ•°åŠŸèƒ½ï¼šè·å¾—å‘é€çŠ¶æ€
+å…¥å£å‚æ•°ï¼šmboxï¼šé‚®ç®±ç¼–å·
+è¿”å›  å€¼ï¼š0,æŒ‚èµ·;0X05,å‘é€å¤±è´¥;0X07,å‘é€æˆåŠŸ
 **************************************************************************/
 u8 CAN1_Tx_Staus(u8 mbox)
 {	
@@ -235,7 +235,7 @@ u8 CAN1_Tx_Staus(u8 mbox)
 			sta |=((CAN1->TSR&(1<<28))>>26); //TME2
 			break;
 		default:
-			sta=0X05; //Wrong email number, failed //ÓÊÏäºÅ²»¶Ô,Ê§°Ü
+			sta=0X05; //Wrong email number, failed //é‚®ç®±å·ä¸å¯¹,å¤±è´¥
 		break;
 	}
 	return sta;
@@ -244,9 +244,9 @@ u8 CAN1_Tx_Staus(u8 mbox)
 Function: Returns the number of packets received in FIFO0/FIFO1
 Input   : Fifox: FIFO number (0, 1)
 Output  : Number of packets in FIFO0/FIFO1
-º¯Êı¹¦ÄÜ£ºµÃµ½ÔÚFIFO0/FIFO1ÖĞ½ÓÊÕµ½µÄ±¨ÎÄ¸öÊı
-Èë¿Ú²ÎÊı£ºfifox£ºFIFO±àºÅ£¨0¡¢1£©
-·µ»Ø  Öµ£ºFIFO0/FIFO1ÖĞµÄ±¨ÎÄ¸öÊı
+å‡½æ•°åŠŸèƒ½ï¼šå¾—åˆ°åœ¨FIFO0/FIFO1ä¸­æ¥æ”¶åˆ°çš„æŠ¥æ–‡ä¸ªæ•°
+å…¥å£å‚æ•°ï¼šfifoxï¼šFIFOç¼–å·ï¼ˆ0ã€1ï¼‰
+è¿”å›  å€¼ï¼šFIFO0/FIFO1ä¸­çš„æŠ¥æ–‡ä¸ªæ•°
 **************************************************************************/
 u8 CAN1_Msg_Pend(u8 fifox)
 {
@@ -256,36 +256,36 @@ u8 CAN1_Msg_Pend(u8 fifox)
 }
 /**************************************************************************
 Function: Receive data
-Input   : fifox£ºEmail
+Input   : fifoxï¼šEmail
 		    	id:Standard ID(11 bits)/ Extended ID(11 bits +18 bits)
 			    ide:0, standard frame;1, extension frames 
 			    rtr:0, data frame;1, remote frame
 			    len:Length of data received (fixed at 8 bytes, valid at 6 bytes in time-triggered mode)
 			    dat:Data cache
 Output  : none
-º¯Êı¹¦ÄÜ£º½ÓÊÕÊı¾İ
-Èë¿Ú²ÎÊı£ºfifox£ºÓÊÏäºÅ
-		    	id:±ê×¼ID(11Î»)/À©Õ¹ID(11Î»+18Î»)
-			    ide:0,±ê×¼Ö¡;1,À©Õ¹Ö¡
-			    rtr:0,Êı¾İÖ¡;1,Ô¶³ÌÖ¡
-			    len:½ÓÊÕµ½µÄÊı¾İ³¤¶È(¹Ì¶¨Îª8¸ö×Ö½Ú,ÔÚÊ±¼ä´¥·¢Ä£Ê½ÏÂ,ÓĞĞ§Êı¾İÎª6¸ö×Ö½Ú)
-			    dat:Êı¾İ»º´æÇø
-·µ»Ø  Öµ£ºÎŞ 
+å‡½æ•°åŠŸèƒ½ï¼šæ¥æ”¶æ•°æ®
+å…¥å£å‚æ•°ï¼šfifoxï¼šé‚®ç®±å·
+		    	id:æ ‡å‡†ID(11ä½)/æ‰©å±•ID(11ä½+18ä½)
+			    ide:0,æ ‡å‡†å¸§;1,æ‰©å±•å¸§
+			    rtr:0,æ•°æ®å¸§;1,è¿œç¨‹å¸§
+			    len:æ¥æ”¶åˆ°çš„æ•°æ®é•¿åº¦(å›ºå®šä¸º8ä¸ªå­—èŠ‚,åœ¨æ—¶é—´è§¦å‘æ¨¡å¼ä¸‹,æœ‰æ•ˆæ•°æ®ä¸º6ä¸ªå­—èŠ‚)
+			    dat:æ•°æ®ç¼“å­˜åŒº
+è¿”å›  å€¼ï¼šæ—  
 **************************************************************************/
 void CAN1_Rx_Msg(u8 fifox,u32 *id,u8 *ide,u8 *rtr,u8 *len,u8 *dat)
 {	   
-	*ide=CAN1->sFIFOMailBox[fifox].RIR&0x04; //Gets the value of the identifier selection bit //µÃµ½±êÊ¶·ûÑ¡ÔñÎ»µÄÖµ  
- 	if(*ide==0) //Standard identifier //±ê×¼±êÊ¶·û
+	*ide=CAN1->sFIFOMailBox[fifox].RIR&0x04; //Gets the value of the identifier selection bit //å¾—åˆ°æ ‡è¯†ç¬¦é€‰æ‹©ä½çš„å€¼  
+ 	if(*ide==0) //Standard identifier //æ ‡å‡†æ ‡è¯†ç¬¦
 	{
 		*id=CAN1->sFIFOMailBox[fifox].RIR>>21;
-	}else	     //Extended identifier //À©Õ¹±êÊ¶·û
+	}else	     //Extended identifier //æ‰©å±•æ ‡è¯†ç¬¦
 	{
 		*id=CAN1->sFIFOMailBox[fifox].RIR>>3;
 	}
-	*rtr=CAN1->sFIFOMailBox[fifox].RIR&0x02;	//Gets the remote send request value //µÃµ½Ô¶³Ì·¢ËÍÇëÇóÖµ
-	*len=CAN1->sFIFOMailBox[fifox].RDTR&0x0F; //Get the DLC //µÃµ½DLC
- 	//*fmi=(CAN1->sFIFOMailBox[FIFONumber].RDTR>>8)&0xFF; //Get the FMI //µÃµ½FMI
-	//Receive data //½ÓÊÕÊı¾İ
+	*rtr=CAN1->sFIFOMailBox[fifox].RIR&0x02;	//Gets the remote send request value //å¾—åˆ°è¿œç¨‹å‘é€è¯·æ±‚å€¼
+	*len=CAN1->sFIFOMailBox[fifox].RDTR&0x0F; //Get the DLC //å¾—åˆ°DLC
+ 	//*fmi=(CAN1->sFIFOMailBox[FIFONumber].RDTR>>8)&0xFF; //Get the FMI //å¾—åˆ°FMI
+	//Receive data //æ¥æ”¶æ•°æ®
 	dat[0]=CAN1->sFIFOMailBox[fifox].RDLR&0XFF;
 	dat[1]=(CAN1->sFIFOMailBox[fifox].RDLR>>8)&0XFF;
 	dat[2]=(CAN1->sFIFOMailBox[fifox].RDLR>>16)&0XFF;
@@ -294,18 +294,18 @@ void CAN1_Rx_Msg(u8 fifox,u32 *id,u8 *ide,u8 *rtr,u8 *len,u8 *dat)
 	dat[5]=(CAN1->sFIFOMailBox[fifox].RDHR>>8)&0XFF;
 	dat[6]=(CAN1->sFIFOMailBox[fifox].RDHR>>16)&0XFF;
 	dat[7]=(CAN1->sFIFOMailBox[fifox].RDHR>>24)&0XFF;    
-  if(fifox==0)CAN1->RF0R|=0X20;      //Free the FIFO0 mailbox //ÊÍ·ÅFIFO0ÓÊÏä
-	else if(fifox==1)CAN1->RF1R|=0X20; //Free the FIFO1 mailbox //ÊÍ·ÅFIFO1ÓÊÏä	 
+  if(fifox==0)CAN1->RF0R|=0X20;      //Free the FIFO0 mailbox //é‡Šæ”¾FIFO0é‚®ç®±
+	else if(fifox==1)CAN1->RF1R|=0X20; //Free the FIFO1 mailbox //é‡Šæ”¾FIFO1é‚®ç®±	 
 }
 /**************************************************************************
 Function: CAN receives interrupt service function, conditional compilation
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£ºCAN½ÓÊÕÖĞ¶Ï·şÎñº¯Êı£¬Ìõ¼ş±àÒë
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ 
+å‡½æ•°åŠŸèƒ½ï¼šCANæ¥æ”¶ä¸­æ–­æœåŠ¡å‡½æ•°ï¼Œæ¡ä»¶ç¼–è¯‘
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ—  
 **************************************************************************/
-#if CAN1_RX0_INT_ENABLE	//Enable RX0 interrupt //Ê¹ÄÜRX0ÖĞ¶Ï	    
+#if CAN1_RX0_INT_ENABLE	//Enable RX0 interrupt //ä½¿èƒ½RX0ä¸­æ–­	    
 void CAN1_RX0_IRQHandler(void)
 {
 	u32 id;
@@ -320,7 +320,7 @@ void CAN1_RX0_IRQHandler(void)
 		CAN_ON_Flag=1, PS2_ON_Flag=0,Remote_ON_Flag=0,APP_ON_Flag=0,Usart1_ON_Flag=0,Usart5_ON_Flag=0;
 		command_lost_count=0;
 		//Calculate the three-axis target velocity, unit: m/s
-		//¼ÆËãÈıÖáÄ¿±êËÙ¶È£¬µ¥Î»£ºm/s
+		//è®¡ç®—ä¸‰è½´ç›®æ ‡é€Ÿåº¦ï¼Œå•ä½ï¼šm/s
 		Move_X=((float)((short)((temp_rxbuf[0]<<8)+(temp_rxbuf[1]))))/1000; 
 		Move_Y=((float)((short)((temp_rxbuf[2]<<8)+(temp_rxbuf[3]))))/1000;
 		Vz    =((float)((short)((temp_rxbuf[4]<<8)+(temp_rxbuf[5]))))/1000;
@@ -341,35 +341,35 @@ Function: CAN1 sends a set of data (fixed format :ID 0X601, standard frame, data
 Input   : msg:Pointer to the data
     			len:Data length (up to 8)
 Output  : 0, success, others, failure;
-º¯Êı¹¦ÄÜ£ºCAN1·¢ËÍÒ»×éÊı¾İ(¹Ì¶¨¸ñÊ½:IDÎª0X601,±ê×¼Ö¡,Êı¾İÖ¡)
-Èë¿Ú²ÎÊı£ºmsg:Êı¾İÖ¸Õë
-    			len:Êı¾İ³¤¶È(×î´óÎª8)
-·µ»Ø  Öµ£º0,³É¹¦£¬ÆäËû,Ê§°Ü;
+å‡½æ•°åŠŸèƒ½ï¼šCAN1å‘é€ä¸€ç»„æ•°æ®(å›ºå®šæ ¼å¼:IDä¸º0X601,æ ‡å‡†å¸§,æ•°æ®å¸§)
+å…¥å£å‚æ•°ï¼šmsg:æ•°æ®æŒ‡é’ˆ
+    			len:æ•°æ®é•¿åº¦(æœ€å¤§ä¸º8)
+è¿”å›  å€¼ï¼š0,æˆåŠŸï¼Œå…¶ä»–,å¤±è´¥;
 **************************************************************************/
 u8 CAN1_Send_Msg(u8* msg,u8 len)
 {	
 	u8 mbox;
 	u16 i=0;	  	 						       
   mbox=CAN1_Tx_Msg(0X601,0,0,len,msg);   
-	while((CAN1_Tx_Staus(mbox)!=0X07)&&(i<0XFFF))i++; //Waiting for the end of sending //µÈ´ı·¢ËÍ½áÊø
-	if(i>=0XFFF)return 1; //Send failure //·¢ËÍÊ§°Ü
-	return 0;	//Send a success //·¢ËÍ³É¹¦									
+	while((CAN1_Tx_Staus(mbox)!=0X07)&&(i<0XFFF))i++; //Waiting for the end of sending //ç­‰å¾…å‘é€ç»“æŸ
+	if(i>=0XFFF)return 1; //Send failure //å‘é€å¤±è´¥
+	return 0;	//Send a success //å‘é€æˆåŠŸ									
 }
 /**************************************************************************
 Function: The CAN1 port receives data queries
 Input   : Buf: The data cache
 Output  : 0, number of data received, other, length of data received
-º¯Êı¹¦ÄÜ£ºCAN1¿Ú½ÓÊÕÊı¾İ²éÑ¯
-Èë¿Ú²ÎÊı£ºbuf:Êı¾İ»º´æÇø
-·µ»Ø  Öµ£º0,ÎŞÊı¾İ±»ÊÕµ½£¬ÆäËû,½ÓÊÕµÄÊı¾İ³¤¶È
+å‡½æ•°åŠŸèƒ½ï¼šCAN1å£æ¥æ”¶æ•°æ®æŸ¥è¯¢
+å…¥å£å‚æ•°ï¼šbuf:æ•°æ®ç¼“å­˜åŒº
+è¿”å›  å€¼ï¼š0,æ— æ•°æ®è¢«æ”¶åˆ°ï¼Œå…¶ä»–,æ¥æ”¶çš„æ•°æ®é•¿åº¦
 **************************************************************************/
 u8 CAN1_Receive_Msg(u8 *buf)
 {		   		   
 	u32 id;
 	u8 ide,rtr,len; 
-	if(CAN1_Msg_Pend(0)==0)return 0;			   //No data received, exit directly //Ã»ÓĞ½ÓÊÕµ½Êı¾İ,Ö±½ÓÍË³ö 	 
-  	CAN1_Rx_Msg(0,&id,&ide,&rtr,&len,buf); //Read the data //¶ÁÈ¡Êı¾İ
-    if(id!=0x12||ide!=0||rtr!=0)len=0;		 //Receive error //½ÓÊÕ´íÎó	   
+	if(CAN1_Msg_Pend(0)==0)return 0;			   //No data received, exit directly //æ²¡æœ‰æ¥æ”¶åˆ°æ•°æ®,ç›´æ¥é€€å‡º 	 
+  	CAN1_Rx_Msg(0,&id,&ide,&rtr,&len,buf); //Read the data //è¯»å–æ•°æ®
+    if(id!=0x12||ide!=0||rtr!=0)len=0;		 //Receive error //æ¥æ”¶é”™è¯¯	   
 	return len;	
 }
 /**************************************************************************
@@ -377,36 +377,36 @@ Function: Can1 sends a set of data tests
 Input   : msg:Pointer to the data
 			    len:Data length (up to 8)
 Output  : 0, success, 1, failure
-º¯Êı¹¦ÄÜ£ºCAN1·¢ËÍÒ»×éÊı¾İ²âÊÔ
-Èë¿Ú²ÎÊı£ºmsg:Êı¾İÖ¸Õë
-			    len:Êı¾İ³¤¶È(×î´óÎª8)
-·µ»Ø  Öµ£º0,³É¹¦£¬1,Ê§°Ü
+å‡½æ•°åŠŸèƒ½ï¼šCAN1å‘é€ä¸€ç»„æ•°æ®æµ‹è¯•
+å…¥å£å‚æ•°ï¼šmsg:æ•°æ®æŒ‡é’ˆ
+			    len:æ•°æ®é•¿åº¦(æœ€å¤§ä¸º8)
+è¿”å›  å€¼ï¼š0,æˆåŠŸï¼Œ1,å¤±è´¥
 **************************************************************************/
 u8 CAN1_Send_MsgTEST(u8* msg,u8 len)
 {	
 	u8 mbox;
 	u16 i=0;	  	 						       
     mbox=CAN1_Tx_Msg(0X701,0,0,len,msg);   
-	while((CAN1_Tx_Staus(mbox)!=0X07)&&(i<0XFFF))i++; //Waiting for the end of sending //µÈ´ı·¢ËÍ½áÊø
-	if(i>=0XFFF)return 1;	//Send failure //·¢ËÍÊ§°Ü
-	return 0;	//Send a success //·¢ËÍ³É¹¦
+	while((CAN1_Tx_Staus(mbox)!=0X07)&&(i<0XFFF))i++; //Waiting for the end of sending //ç­‰å¾…å‘é€ç»“æŸ
+	if(i>=0XFFF)return 1;	//Send failure //å‘é€å¤±è´¥
+	return 0;	//Send a success //å‘é€æˆåŠŸ
 }
 /**************************************************************************
 Function: Sends an array to the given ID
-Input   : id£ºID no.
-			    msg£ºThe transmitted data pointer
+Input   : idï¼šID no.
+			    msgï¼šThe transmitted data pointer
 Output  : 0, success, 1, failure
-º¯Êı¹¦ÄÜ£º¸ø¸ø¶¨µÄid·¢ËÍÒ»¸öÊı×éµÄÃüÁî
-Èë¿Ú²ÎÊı£ºid£ºIDºÅ
-			    msg£º±»ÊäËÍÊı¾İÖ¸Õë
-·µ»Ø  Öµ£º0,³É¹¦£¬1,Ê§°Ü
+å‡½æ•°åŠŸèƒ½ï¼šç»™ç»™å®šçš„idå‘é€ä¸€ä¸ªæ•°ç»„çš„å‘½ä»¤
+å…¥å£å‚æ•°ï¼šidï¼šIDå·
+			    msgï¼šè¢«è¾“é€æ•°æ®æŒ‡é’ˆ
+è¿”å›  å€¼ï¼š0,æˆåŠŸï¼Œ1,å¤±è´¥
 **************************************************************************/
 u8 CAN1_Send_Num(u32 id,u8* msg)
 {
 	u8 mbox;
 	u16 i=0;	  	 						       
   mbox=CAN1_Tx_Msg(id,0,0,8,msg);   
-	while((CAN1_Tx_Staus(mbox)!=0X07)&&(i<0XFFF))i++; //Waiting for the end of sending //µÈ´ı·¢ËÍ½áÊø
-	if(i>=0XFFF)return 1;	//Send failure //·¢ËÍÊ§°Ü
+	while((CAN1_Tx_Staus(mbox)!=0X07)&&(i<0XFFF))i++; //Waiting for the end of sending //ç­‰å¾…å‘é€ç»“æŸ
+	if(i>=0XFFF)return 1;	//Send failure //å‘é€å¤±è´¥
 	return 0;
 }

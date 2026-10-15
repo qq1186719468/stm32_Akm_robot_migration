@@ -8,18 +8,18 @@ u8 OLED_GRAM[128][8];
 Function: Refresh the OLED screen
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£ºË¢ĞÂOLEDÆÁÄ»
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šåˆ·æ–°OLEDå±å¹•
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void OLED_Refresh_Gram(void)
 {
 	u8 i,n;		    
 	for(i=0;i<8;i++)  
 	{  
-		OLED_WR_Byte (0xb0+i,OLED_CMD);    //Set page address (0~7) //ÉèÖÃÒ³µØÖ·£¨0~7£©
-		OLED_WR_Byte (0x00,OLED_CMD);      //Set the display location - column low address //ÉèÖÃÏÔÊ¾Î»ÖÃ¡ªÁĞµÍµØÖ·
-		OLED_WR_Byte (0x10,OLED_CMD);      //Set the display location - column height address //ÉèÖÃÏÔÊ¾Î»ÖÃ¡ªÁĞ¸ßµØÖ·   
+		OLED_WR_Byte (0xb0+i,OLED_CMD);    //Set page address (0~7) //è®¾ç½®é¡µåœ°å€ï¼ˆ0~7ï¼‰
+		OLED_WR_Byte (0x00,OLED_CMD);      //Set the display location - column low address //è®¾ç½®æ˜¾ç¤ºä½ç½®â€”åˆ—ä½åœ°å€
+		OLED_WR_Byte (0x10,OLED_CMD);      //Set the display location - column height address //è®¾ç½®æ˜¾ç¤ºä½ç½®â€”åˆ—é«˜åœ°å€   
 		for(n=0;n<128;n++)OLED_WR_Byte(OLED_GRAM[n][i],OLED_DATA); 
 	}   
 }
@@ -27,9 +27,9 @@ void OLED_Refresh_Gram(void)
 Function: Refresh the OLED screen
 Input   : Dat: data/command to write, CMD: data/command flag 0, represents the command;1, represents data
 Output  : none
-º¯Êı¹¦ÄÜ£ºÏòOLEDĞ´ÈëÒ»¸ö×Ö½Ú
-Èë¿Ú²ÎÊı£ºdat:ÒªĞ´ÈëµÄÊı¾İ/ÃüÁî£¬cmd:Êı¾İ/ÃüÁî±êÖ¾ 0,±íÊ¾ÃüÁî;1,±íÊ¾Êı¾İ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šå‘OLEDå†™å…¥ä¸€ä¸ªå­—èŠ‚
+å…¥å£å‚æ•°ï¼šdat:è¦å†™å…¥çš„æ•°æ®/å‘½ä»¤ï¼Œcmd:æ•°æ®/å‘½ä»¤æ ‡å¿— 0,è¡¨ç¤ºå‘½ä»¤;1,è¡¨ç¤ºæ•°æ®
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/  
 void OLED_WR_Byte(u8 dat,u8 cmd)
 {	
@@ -54,13 +54,13 @@ void OLED_WR_Byte(u8 dat,u8 cmd)
 Function: Turn on the OLED display
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£º¿ªÆôOLEDÏÔÊ¾ 
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šå¼€å¯OLEDæ˜¾ç¤º 
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/  
 void OLED_Display_On(void)
 {
-	OLED_WR_Byte(0X8D,OLED_CMD);  //SET DCDC command //SET DCDCÃüÁî
+	OLED_WR_Byte(0X8D,OLED_CMD);  //SET DCDC command //SET DCDCå‘½ä»¤
 	OLED_WR_Byte(0X14,OLED_CMD);  //DCDC ON
 	OLED_WR_Byte(0XAF,OLED_CMD);  //DISPLAY ON
 }
@@ -68,13 +68,13 @@ void OLED_Display_On(void)
 Function: Turn off the OLED display
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£º¹Ø±ÕOLEDÏÔÊ¾ 
-Èë¿Ú²ÎÊı£ºÎŞ			  
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šå…³é—­OLEDæ˜¾ç¤º 
+å…¥å£å‚æ•°ï¼šæ— 			  
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/  
 void OLED_Display_Off(void)
 {
-	OLED_WR_Byte(0X8D,OLED_CMD);  //SET DCDC command //SET DCDCÃüÁî
+	OLED_WR_Byte(0X8D,OLED_CMD);  //SET DCDC command //SET DCDCå‘½ä»¤
 	OLED_WR_Byte(0X10,OLED_CMD);  //DCDC OFF
 	OLED_WR_Byte(0XAE,OLED_CMD);  //DISPLAY OFF
 }	
@@ -82,28 +82,28 @@ void OLED_Display_Off(void)
 Function: Screen clear function, clear the screen, the entire screen is black, and did not light up the same
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£ºÇåÆÁº¯Êı,ÇåÍêÆÁ,Õû¸öÆÁÄ»ÊÇºÚÉ«µÄ£¬ºÍÃ»µãÁÁÒ»Ñù
-Èë¿Ú²ÎÊı£ºÎŞ		  
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šæ¸…å±å‡½æ•°,æ¸…å®Œå±,æ•´ä¸ªå±å¹•æ˜¯é»‘è‰²çš„ï¼Œå’Œæ²¡ç‚¹äº®ä¸€æ ·
+å…¥å£å‚æ•°ï¼šæ— 		  
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/  
 void OLED_Clear(void)  
 {  
 	u8 i,n;  
 	for(i=0;i<8;i++)for(n=0;n<128;n++)OLED_GRAM[n][i]=0X00;  
-	OLED_Refresh_Gram(); //Update the display //¸üĞÂÏÔÊ¾
+	OLED_Refresh_Gram(); //Update the display //æ›´æ–°æ˜¾ç¤º
 }
 /**************************************************************************
 Function: Draw point
 Input   : x,y: starting coordinate;T :1, fill,0, empty
 Output  : none
-º¯Êı¹¦ÄÜ£º»­µã 
-Èë¿Ú²ÎÊı£ºx,y :Æğµã×ø±ê; t:1,Ìî³ä,0,Çå¿Õ			  
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šç”»ç‚¹ 
+å…¥å£å‚æ•°ï¼šx,y :èµ·ç‚¹åæ ‡; t:1,å¡«å……,0,æ¸…ç©º			  
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/ 
 void OLED_DrawPoint(u8 x,u8 y,u8 t)
 {
 	u8 pos,bx,temp=0;
-	if(x>127||y>63)return;//³¬³ö·¶Î§ÁË.
+	if(x>127||y>63)return;//è¶…å‡ºèŒƒå›´äº†.
 	pos=7-y/8;
 	bx=y%8;
 	temp=1<<(7-bx);
@@ -114,19 +114,19 @@ void OLED_DrawPoint(u8 x,u8 y,u8 t)
 Function: Displays a character, including partial characters, at the specified position
 Input   : x,y: starting coordinate;Len: The number of digits;Size: font size;Mode :0, anti-white display,1, normal display
 Output  : none
-º¯Êı¹¦ÄÜ£ºÔÚÖ¸¶¨Î»ÖÃÏÔÊ¾Ò»¸ö×Ö·û,°üÀ¨²¿·Ö×Ö·û
-Èë¿Ú²ÎÊı£ºx,y :Æğµã×ø±ê; len :Êı×ÖµÄÎ»Êı; size:×ÖÌå´óĞ¡; mode:0,·´°×ÏÔÊ¾,1,Õı³£ÏÔÊ¾	   
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šåœ¨æŒ‡å®šä½ç½®æ˜¾ç¤ºä¸€ä¸ªå­—ç¬¦,åŒ…æ‹¬éƒ¨åˆ†å­—ç¬¦
+å…¥å£å‚æ•°ï¼šx,y :èµ·ç‚¹åæ ‡; len :æ•°å­—çš„ä½æ•°; size:å­—ä½“å¤§å°; mode:0,åç™½æ˜¾ç¤º,1,æ­£å¸¸æ˜¾ç¤º	   
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void OLED_ShowChar(u8 x,u8 y,u8 chr,u8 size,u8 mode)
 {      			    
 	u8 temp,t,t1;
 	u8 y0=y;
-	chr=chr-' '; //Get the offset value //µÃµ½Æ«ÒÆºóµÄÖµ				   
+	chr=chr-' '; //Get the offset value //å¾—åˆ°åç§»åçš„å€¼				   
     for(t=0;t<size;t++)
     {   
-		if(size==12)temp=oled_asc2_1206[chr][t];  //Invoke 1206 font   //µ÷ÓÃ1206×ÖÌå
-		else temp=oled_asc2_1608[chr][t];		      //Invoke the 1608 font //µ÷ÓÃ1608×ÖÌå 	                          
+		if(size==12)temp=oled_asc2_1206[chr][t];  //Invoke 1206 font   //è°ƒç”¨1206å­—ä½“
+		else temp=oled_asc2_1608[chr][t];		      //Invoke the 1608 font //è°ƒç”¨1608å­—ä½“ 	                          
         for(t1=0;t1<8;t1++)
 		{
 			if(temp&0x80)OLED_DrawPoint(x,y,mode);
@@ -146,9 +146,9 @@ void OLED_ShowChar(u8 x,u8 y,u8 chr,u8 size,u8 mode)
 Function: Find m to the NTH power
 Input   : m: base number, n: power number
 Output  : none
-º¯Êı¹¦ÄÜ£ºÇómµÄn´Î·½µÄº¯Êı
-Èë¿Ú²ÎÊı£ºm£ºµ×Êı£¬n£º´Î·½Êı
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šæ±‚mçš„næ¬¡æ–¹çš„å‡½æ•°
+å…¥å£å‚æ•°ï¼šmï¼šåº•æ•°ï¼Œnï¼šæ¬¡æ–¹æ•°
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 u32 oled_pow(u8 m,u8 n)
 {
@@ -161,9 +161,9 @@ u32 oled_pow(u8 m,u8 n)
 Function: Displays 2 numbers
 Input   : x,y: starting coordinate;Len: The number of digits;Size: font size;Mode: mode, 0, fill mode, 1, overlay mode;Num: value (0 ~ 4294967295);
 Output  : none
-º¯Êı¹¦ÄÜ£ºÏÔÊ¾2¸öÊı×Ö
-Èë¿Ú²ÎÊı£ºx,y :Æğµã×ø±ê; len :Êı×ÖµÄÎ»Êı; size:×ÖÌå´óĞ¡; mode:Ä£Ê½, 0,Ìî³äÄ£Ê½, 1,µş¼ÓÄ£Ê½; num:ÊıÖµ(0~4294967295);	 
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šæ˜¾ç¤º2ä¸ªæ•°å­—
+å…¥å£å‚æ•°ï¼šx,y :èµ·ç‚¹åæ ‡; len :æ•°å­—çš„ä½æ•°; size:å­—ä½“å¤§å°; mode:æ¨¡å¼, 0,å¡«å……æ¨¡å¼, 1,å åŠ æ¨¡å¼; num:æ•°å€¼(0~4294967295);	 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void OLED_ShowNumber(u8 x,u8 y,u32 num,u8 len,u8 size)
 {         	
@@ -188,9 +188,9 @@ void OLED_ShowNumber(u8 x,u8 y,u32 num,u8 len,u8 size)
 Function: Display string
 Input   : x,y: starting coordinate;*p: starting address of the string
 Output  : none
-º¯Êı¹¦ÄÜ£ºÏÔÊ¾×Ö·û´®
-Èë¿Ú²ÎÊı£ºx,y :Æğµã×ø±ê; *p:×Ö·û´®ÆğÊ¼µØÖ· 
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šæ˜¾ç¤ºå­—ç¬¦ä¸²
+å…¥å£å‚æ•°ï¼šx,y :èµ·ç‚¹åæ ‡; *p:å­—ç¬¦ä¸²èµ·å§‹åœ°å€ 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void OLED_ShowString(u8 x,u8 y,const u8 *p)
 {
@@ -223,71 +223,71 @@ void OLED_ShowString16(u8 x,u8 y,const u8 *p)
 Function: Initialize the OLED
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£º³õÊ¼»¯OLED	
-Èë¿Ú²ÎÊı: ÎŞ 
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šåˆå§‹åŒ–OLED	
+å…¥å£å‚æ•°: æ—  
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/	    
 void OLED_Init(void)
 { 	
   GPIO_InitTypeDef GPIO_InitStructure;
 	
 	//Enable pB port clock
-	//Ê¹ÄÜPB¶Ë¿ÚÊ±ÖÓ
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD  , ENABLE);  //Ê¹ÄÜGPIOC
+	//ä½¿èƒ½PBç«¯å£æ—¶é’Ÿ
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD  , ENABLE);  //ä½¿èƒ½GPIOC
 
 	//Port configuration
-	//¶Ë¿ÚÅäÖÃ
+	//ç«¯å£é…ç½®
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;   //Êä³ö
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;   //è¾“å‡º
 	GPIO_InitStructure.GPIO_OType =GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_Speed =GPIO_Speed_2MHz;  //2M
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;//¸ù¾İÉè¶¨²ÎÊı³õÊ¼»¯GPIO
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;//æ ¹æ®è®¾å®šå‚æ•°åˆå§‹åŒ–GPIO
 	GPIO_Init(GPIOD, &GPIO_InitStructure);				      
 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR  , ENABLE);    //PWRÊ¹ÄÜ
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR  , ENABLE);    //PWRä½¿èƒ½
 	//Allows you to modify RTC and backup registers
-  //ÔÊĞíĞŞ¸ÄRTCºÍºó±¸¼Ä´æÆ÷
+  //å…è®¸ä¿®æ”¹RTCå’Œåå¤‡å¯„å­˜å™¨
 	PWR_BackupAccessCmd(ENABLE);
 	//Turn off the external low speed external clock signal function, PC13, PC14, PC15 can be used as normal IO
-	//¹Ø±ÕÍâ²¿µÍËÙÍâ²¿Ê±ÖÓĞÅºÅ¹¦ÄÜ ºó£¬PC13 PC14 PC15 ²Å¿ÉÒÔµ±ÆÕÍ¨IOÓÃ
+	//å…³é—­å¤–éƒ¨ä½é€Ÿå¤–éƒ¨æ—¶é’Ÿä¿¡å·åŠŸèƒ½ åï¼ŒPC13 PC14 PC15 æ‰å¯ä»¥å½“æ™®é€šIOç”¨
 	RCC_LSEConfig(RCC_LSE_OFF);
 	//Do not modify the backup register
-	//½ûÖ¹ĞŞ¸Äºó±¸¼Ä´æÆ÷
+	//ç¦æ­¢ä¿®æ”¹åå¤‡å¯„å­˜å™¨
 	PWR_BackupAccessCmd(DISABLE);
 
 	OLED_RST_Clr();
 	delay_ms(100);
 	OLED_RST_Set(); 
 				  
-	OLED_WR_Byte(0xAE,OLED_CMD); //Close display //¹Ø±ÕÏÔÊ¾
-	OLED_WR_Byte(0xD5,OLED_CMD); //The frequency frequency factor, the frequency of the shock //ÉèÖÃÊ±ÖÓ·ÖÆµÒò×Ó,Õğµ´ÆµÂÊ
-	OLED_WR_Byte(80,OLED_CMD);   //[3:0], the frequency dividing factor;[7:4], oscillation frequency //[3:0],·ÖÆµÒò×Ó;[7:4],Õğµ´ÆµÂÊ
-	OLED_WR_Byte(0xA8,OLED_CMD); //Set the number of driver paths //ÉèÖÃÇı¶¯Â·Êı
-	OLED_WR_Byte(0X3F,OLED_CMD); //Default 0x3f(1/64) //Ä¬ÈÏ0X3F(1/64) 
-	OLED_WR_Byte(0xD3,OLED_CMD); //Setting display deviation //ÉèÖÃÏÔÊ¾Æ«ÒÆ
-	OLED_WR_Byte(0X00,OLED_CMD); //Default is 0//Ä¬ÈÏÎª0
+	OLED_WR_Byte(0xAE,OLED_CMD); //Close display //å…³é—­æ˜¾ç¤º
+	OLED_WR_Byte(0xD5,OLED_CMD); //The frequency frequency factor, the frequency of the shock //è®¾ç½®æ—¶é’Ÿåˆ†é¢‘å› å­,éœ‡è¡é¢‘ç‡
+	OLED_WR_Byte(80,OLED_CMD);   //[3:0], the frequency dividing factor;[7:4], oscillation frequency //[3:0],åˆ†é¢‘å› å­;[7:4],éœ‡è¡é¢‘ç‡
+	OLED_WR_Byte(0xA8,OLED_CMD); //Set the number of driver paths //è®¾ç½®é©±åŠ¨è·¯æ•°
+	OLED_WR_Byte(0X3F,OLED_CMD); //Default 0x3f(1/64) //é»˜è®¤0X3F(1/64) 
+	OLED_WR_Byte(0xD3,OLED_CMD); //Setting display deviation //è®¾ç½®æ˜¾ç¤ºåç§»
+	OLED_WR_Byte(0X00,OLED_CMD); //Default is 0//é»˜è®¤ä¸º0
 
-	OLED_WR_Byte(0x40,OLED_CMD); //Sets the number of rows to display starting line [5:0] //ÉèÖÃÏÔÊ¾¿ªÊ¼ĞĞ [5:0],ĞĞÊı
+	OLED_WR_Byte(0x40,OLED_CMD); //Sets the number of rows to display starting line [5:0] //è®¾ç½®æ˜¾ç¤ºå¼€å§‹è¡Œ [5:0],è¡Œæ•°
 													
-	OLED_WR_Byte(0x8D,OLED_CMD); //Charge pump setup //µçºÉ±ÃÉèÖÃ
-	OLED_WR_Byte(0x14,OLED_CMD); //Bit2, on/off //bit2£¬¿ªÆô/¹Ø±Õ
-	OLED_WR_Byte(0x20,OLED_CMD); //Set up the memory address mode //ÉèÖÃÄÚ´æµØÖ·Ä£Ê½
-	OLED_WR_Byte(0x02,OLED_CMD); //[1:0],00, column address mode;01, line address mode;10. Page address mode;The default 10; //[1:0],00£¬ÁĞµØÖ·Ä£Ê½;01£¬ĞĞµØÖ·Ä£Ê½;10,Ò³µØÖ·Ä£Ê½;Ä¬ÈÏ10;
-	OLED_WR_Byte(0xA1,OLED_CMD); //Segment redefine setting,bit0:0,0- >;0;1, 0 - & gt;127; //¶ÎÖØ¶¨ÒåÉèÖÃ,bit0:0,0->0;1,0->127;
-	OLED_WR_Byte(0xC0,OLED_CMD); //Set the COM scan direction;Bit3:0, normal mode;1, Re-define schema COM[n-1]- >;COM0;N: Number of driving paths//ÉèÖÃCOMÉ¨Ãè·½Ïò;bit3:0,ÆÕÍ¨Ä£Ê½;1,ÖØ¶¨ÒåÄ£Ê½ COM[N-1]->COM0;N:Çı¶¯Â·Êı
-	OLED_WR_Byte(0xDA,OLED_CMD); //Set the COM hardware pin configuration //ÉèÖÃCOMÓ²¼şÒı½ÅÅäÖÃ
-	OLED_WR_Byte(0x12,OLED_CMD); //[5:4]configuration //[5:4]ÅäÖÃ
+	OLED_WR_Byte(0x8D,OLED_CMD); //Charge pump setup //ç”µè·æ³µè®¾ç½®
+	OLED_WR_Byte(0x14,OLED_CMD); //Bit2, on/off //bit2ï¼Œå¼€å¯/å…³é—­
+	OLED_WR_Byte(0x20,OLED_CMD); //Set up the memory address mode //è®¾ç½®å†…å­˜åœ°å€æ¨¡å¼
+	OLED_WR_Byte(0x02,OLED_CMD); //[1:0],00, column address mode;01, line address mode;10. Page address mode;The default 10; //[1:0],00ï¼Œåˆ—åœ°å€æ¨¡å¼;01ï¼Œè¡Œåœ°å€æ¨¡å¼;10,é¡µåœ°å€æ¨¡å¼;é»˜è®¤10;
+	OLED_WR_Byte(0xA1,OLED_CMD); //Segment redefine setting,bit0:0,0- >;0;1, 0 - & gt;127; //æ®µé‡å®šä¹‰è®¾ç½®,bit0:0,0->0;1,0->127;
+	OLED_WR_Byte(0xC0,OLED_CMD); //Set the COM scan direction;Bit3:0, normal mode;1, Re-define schema COM[n-1]- >;COM0;N: Number of driving paths//è®¾ç½®COMæ‰«ææ–¹å‘;bit3:0,æ™®é€šæ¨¡å¼;1,é‡å®šä¹‰æ¨¡å¼ COM[N-1]->COM0;N:é©±åŠ¨è·¯æ•°
+	OLED_WR_Byte(0xDA,OLED_CMD); //Set the COM hardware pin configuration //è®¾ç½®COMç¡¬ä»¶å¼•è„šé…ç½®
+	OLED_WR_Byte(0x12,OLED_CMD); //[5:4]configuration //[5:4]é…ç½®
 	 
-	OLED_WR_Byte(0x81,OLED_CMD); //Contrast Settings //¶Ô±È¶ÈÉèÖÃ
-	OLED_WR_Byte(0xEF,OLED_CMD); //1~ 255; Default 0x7f (brightness Settings, the bigger the brighter) //1~255;Ä¬ÈÏ0X7F (ÁÁ¶ÈÉèÖÃ,Ô½´óÔ½ÁÁ)
-	OLED_WR_Byte(0xD9,OLED_CMD); //Set the pre-charging cycle //ÉèÖÃÔ¤³äµçÖÜÆÚ
+	OLED_WR_Byte(0x81,OLED_CMD); //Contrast Settings //å¯¹æ¯”åº¦è®¾ç½®
+	OLED_WR_Byte(0xEF,OLED_CMD); //1~ 255; Default 0x7f (brightness Settings, the bigger the brighter) //1~255;é»˜è®¤0X7F (äº®åº¦è®¾ç½®,è¶Šå¤§è¶Šäº®)
+	OLED_WR_Byte(0xD9,OLED_CMD); //Set the pre-charging cycle //è®¾ç½®é¢„å……ç”µå‘¨æœŸ
 	OLED_WR_Byte(0xf1,OLED_CMD); //[3:0],PHASE 1;[7:4],PHASE 2;
-	OLED_WR_Byte(0xDB,OLED_CMD); //Setting vcomh voltage multiplier//ÉèÖÃVCOMH µçÑ¹±¶ÂÊ
+	OLED_WR_Byte(0xDB,OLED_CMD); //Setting vcomh voltage multiplier//è®¾ç½®VCOMH ç”µå‹å€ç‡
 	OLED_WR_Byte(0x30,OLED_CMD); //[6:4] 000,0.65*vcc;001,0.77*vcc;011,0.83*vcc;
 
-	OLED_WR_Byte(0xA4,OLED_CMD); //Global display; Bit0:1, open; 0, close; (white screen/black screen)//È«¾ÖÏÔÊ¾¿ªÆô;bit0:1,¿ªÆô;0,¹Ø±Õ;(°×ÆÁ/ºÚÆÁ)
-	OLED_WR_Byte(0xA6,OLED_CMD); //Settings display mode; Bit0:1, anti-phase display; 0, normal display//ÉèÖÃÏÔÊ¾·½Ê½;bit0:1,·´ÏàÏÔÊ¾;0,Õı³£ÏÔÊ¾	    						   
-	OLED_WR_Byte(0xAF,OLED_CMD); //Open display //¿ªÆôÏÔÊ¾	 
+	OLED_WR_Byte(0xA4,OLED_CMD); //Global display; Bit0:1, open; 0, close; (white screen/black screen)//å…¨å±€æ˜¾ç¤ºå¼€å¯;bit0:1,å¼€å¯;0,å…³é—­;(ç™½å±/é»‘å±)
+	OLED_WR_Byte(0xA6,OLED_CMD); //Settings display mode; Bit0:1, anti-phase display; 0, normal display//è®¾ç½®æ˜¾ç¤ºæ–¹å¼;bit0:1,åç›¸æ˜¾ç¤º;0,æ­£å¸¸æ˜¾ç¤º	    						   
+	OLED_WR_Byte(0xAF,OLED_CMD); //Open display //å¼€å¯æ˜¾ç¤º	 
 	OLED_Clear();
 }  
 
@@ -299,23 +299,23 @@ Input   : x: indicates the horizontal coordinates displayed; Y: the vertical coo
           font_height: the font is high for the use of the word mold, because my screen pixels are 32hours, 128----0~ 7, and four bits per page
 Output  : none
 Note: this method is used to show that the Chinese character must satisfy the size of the word that the word model generates the software to generate the same size as the dot matrix
-º¯Êı¹¦ÄÜ£ºÏÔÊ¾ºº×Ö	
-Èë¿Ú²ÎÊı: x£º±íÊ¾ÏÔÊ¾µÄË®Æ½×ø±ê; y: ±íÊ¾ÏÔÊ¾µÄ´¹Ö±×ø±ê;
-          no: ±íÊ¾ÒªÏÔÊ¾µÄºº×Ö£¨Ä£×é£©ÔÚhzk[][]Êı×éÖĞµÄĞĞºÅ,Í¨¹ıĞĞºÅÀ´È·¶¨ÔÚÊı×éÖĞÒªÏÔÊ¾µÄºº×Ö,
-              ÕâÀï×ÖÌåµÄ¿ífont_widthµÄÖµ±ØĞëÓëÓÃ×ÖÄ£ÖÆ×÷Èí¼şÉú³É×ÖÄ£Ê±µÄµãÕóÖµ´óĞ¡Ò»ÖÂ;
-          font_height:ÎªÓÃ×ÖÄ£ÖÆ×÷Èí¼şÉú³É×ÖÄ£Ê±×ÖÌåµÄ¸ß,ÓÉÓÚÎÒµÄÆÁÏñËØÎª32*128-----0~7¹²8Ò³£¬Ã¿Ò³4¸öÎ»
-·µ»Ø  Öµ£ºÎŞ
-×¢Òâ£ºÓÃÕâÖÖ·½·¨À´ÏÔÊ¾ºº×ÖÒ»¶¨ÒªÂú×ãÓÃ×ÖÄ£Éú³ÉÈí¼şÉú³ÉµÄ×Ö¿íÓëµãÕó´óĞ¡ÏàÍ¬²ÅĞĞ£¬·ñÕßÈİÒ×ÂÒÂë
+å‡½æ•°åŠŸèƒ½ï¼šæ˜¾ç¤ºæ±‰å­—	
+å…¥å£å‚æ•°: xï¼šè¡¨ç¤ºæ˜¾ç¤ºçš„æ°´å¹³åæ ‡; y: è¡¨ç¤ºæ˜¾ç¤ºçš„å‚ç›´åæ ‡;
+          no: è¡¨ç¤ºè¦æ˜¾ç¤ºçš„æ±‰å­—ï¼ˆæ¨¡ç»„ï¼‰åœ¨hzk[][]æ•°ç»„ä¸­çš„è¡Œå·,é€šè¿‡è¡Œå·æ¥ç¡®å®šåœ¨æ•°ç»„ä¸­è¦æ˜¾ç¤ºçš„æ±‰å­—,
+              è¿™é‡Œå­—ä½“çš„å®½font_widthçš„å€¼å¿…é¡»ä¸ç”¨å­—æ¨¡åˆ¶ä½œè½¯ä»¶ç”Ÿæˆå­—æ¨¡æ—¶çš„ç‚¹é˜µå€¼å¤§å°ä¸€è‡´;
+          font_height:ä¸ºç”¨å­—æ¨¡åˆ¶ä½œè½¯ä»¶ç”Ÿæˆå­—æ¨¡æ—¶å­—ä½“çš„é«˜,ç”±äºæˆ‘çš„å±åƒç´ ä¸º32*128-----0~7å…±8é¡µï¼Œæ¯é¡µ4ä¸ªä½
+è¿”å›  å€¼ï¼šæ— 
+æ³¨æ„ï¼šç”¨è¿™ç§æ–¹æ³•æ¥æ˜¾ç¤ºæ±‰å­—ä¸€å®šè¦æ»¡è¶³ç”¨å­—æ¨¡ç”Ÿæˆè½¯ä»¶ç”Ÿæˆçš„å­—å®½ä¸ç‚¹é˜µå¤§å°ç›¸åŒæ‰è¡Œï¼Œå¦è€…å®¹æ˜“ä¹±ç 
 **************************************************************************/	    
 //void OLED_ShowCHinese(u8 x,u8 y,u8 no,u8 font_width,u8 font_height)
 //{     			    
 //	 u8 t, i;
 //   for(i=0;i<(font_height/8);i++)	//The maximum height of font_height is 32. this screen is only 8 pages (line), four digits per page
-//	                                //font_height×î´óÖµÎª32£¬ÕâÕÅÆÁÖ»ÓĞ8¸öÒ³£¨ĞĞ£©£¬Ã¿Ò³4¸öÎ»
+//	                                //font_heightæœ€å¤§å€¼ä¸º32ï¼Œè¿™å¼ å±åªæœ‰8ä¸ªé¡µï¼ˆè¡Œï¼‰ï¼Œæ¯é¡µ4ä¸ªä½
 //	 {
 //			OLED_Set_Pos(x,y+i);	
 //			for(t=0;t<font_width;t++)		//The maximum value of font_width is 128. the screen is only that large 
-//		                              //font_width×î´óÖµÎª128£¬ÆÁÄ»Ö»ÓĞÕâÃ´´ó
+//		                              //font_widthæœ€å¤§å€¼ä¸º128ï¼Œå±å¹•åªæœ‰è¿™ä¹ˆå¤§
 //			{	
 //					OLED_WR_Byte(Hzk16[(font_height/8)*no+i][t],OLED_DATA);
 //			}		
@@ -330,13 +330,13 @@ Input   : x: indicates the horizontal coordinates displayed; Y: the vertical coo
           font_height: the font is high for the use of the word mold, because my screen pixels are 32hours, 128----0~ 7, and four bits per page
 Output  : none
 Note: this method is used to show that the Chinese character must satisfy the size of the word that the word model generates the software to generate the same size as the dot matrix
-º¯Êı¹¦ÄÜ£ºÏÔÊ¾ºº×Ö	
-Èë¿Ú²ÎÊı: x£º±íÊ¾ÏÔÊ¾µÄË®Æ½×ø±ê; y: ±íÊ¾ÏÔÊ¾µÄ´¹Ö±×ø±ê;
-          no: ±íÊ¾ÒªÏÔÊ¾µÄºº×Ö£¨Ä£×é£©ÔÚhzk[][]Êı×éÖĞµÄĞĞºÅ,Í¨¹ıĞĞºÅÀ´È·¶¨ÔÚÊı×éÖĞÒªÏÔÊ¾µÄºº×Ö,
-              ÕâÀï×ÖÌåµÄ¿ífont_widthµÄÖµ±ØĞëÓëÓÃ×ÖÄ£ÖÆ×÷Èí¼şÉú³É×ÖÄ£Ê±µÄµãÕóÖµ´óĞ¡Ò»ÖÂ;
-          font_height:ÎªÓÃ×ÖÄ£ÖÆ×÷Èí¼şÉú³É×ÖÄ£Ê±×ÖÌåµÄ¸ß,ÓÉÓÚÎÒµÄÆÁÏñËØÎª32*128-----0~7¹²8Ò³£¬Ã¿Ò³4¸öÎ»
-·µ»Ø  Öµ£ºÎŞ
-×¢Òâ£ºÓÃÕâÖÖ·½·¨À´ÏÔÊ¾ºº×ÖÒ»¶¨ÒªÂú×ãÓÃ×ÖÄ£Éú³ÉÈí¼şÉú³ÉµÄ×Ö¿íÓëµãÕó´óĞ¡ÏàÍ¬²ÅĞĞ£¬·ñÕßÈİÒ×ÂÒÂë
+å‡½æ•°åŠŸèƒ½ï¼šæ˜¾ç¤ºæ±‰å­—	
+å…¥å£å‚æ•°: xï¼šè¡¨ç¤ºæ˜¾ç¤ºçš„æ°´å¹³åæ ‡; y: è¡¨ç¤ºæ˜¾ç¤ºçš„å‚ç›´åæ ‡;
+          no: è¡¨ç¤ºè¦æ˜¾ç¤ºçš„æ±‰å­—ï¼ˆæ¨¡ç»„ï¼‰åœ¨hzk[][]æ•°ç»„ä¸­çš„è¡Œå·,é€šè¿‡è¡Œå·æ¥ç¡®å®šåœ¨æ•°ç»„ä¸­è¦æ˜¾ç¤ºçš„æ±‰å­—,
+              è¿™é‡Œå­—ä½“çš„å®½font_widthçš„å€¼å¿…é¡»ä¸ç”¨å­—æ¨¡åˆ¶ä½œè½¯ä»¶ç”Ÿæˆå­—æ¨¡æ—¶çš„ç‚¹é˜µå€¼å¤§å°ä¸€è‡´;
+          font_height:ä¸ºç”¨å­—æ¨¡åˆ¶ä½œè½¯ä»¶ç”Ÿæˆå­—æ¨¡æ—¶å­—ä½“çš„é«˜,ç”±äºæˆ‘çš„å±åƒç´ ä¸º32*128-----0~7å…±8é¡µï¼Œæ¯é¡µ4ä¸ªä½
+è¿”å›  å€¼ï¼šæ— 
+æ³¨æ„ï¼šç”¨è¿™ç§æ–¹æ³•æ¥æ˜¾ç¤ºæ±‰å­—ä¸€å®šè¦æ»¡è¶³ç”¨å­—æ¨¡ç”Ÿæˆè½¯ä»¶ç”Ÿæˆçš„å­—å®½ä¸ç‚¹é˜µå¤§å°ç›¸åŒæ‰è¡Œï¼Œå¦è€…å®¹æ˜“ä¹±ç 
 **************************************************************************/	
 void OLED_ShowFont16(u8 x,u8 y,u8 *s)
 {
@@ -374,13 +374,13 @@ Input   : x: indicates the horizontal coordinates displayed; Y: the vertical coo
           font_height: the font is high for the use of the word mold, because my screen pixels are 32hours, 128----0~ 7, and four bits per page
 Output  : none
 Note: this method is used to show that the Chinese character must satisfy the size of the word that the word model generates the software to generate the same size as the dot matrix
-º¯Êı¹¦ÄÜ£ºÏÔÊ¾ºº×Ö	
-Èë¿Ú²ÎÊı: x£º±íÊ¾ÏÔÊ¾µÄË®Æ½×ø±ê; y: ±íÊ¾ÏÔÊ¾µÄ´¹Ö±×ø±ê;
-          no: ±íÊ¾ÒªÏÔÊ¾µÄºº×Ö£¨Ä£×é£©ÔÚhzk[][]Êı×éÖĞµÄĞĞºÅ,Í¨¹ıĞĞºÅÀ´È·¶¨ÔÚÊı×éÖĞÒªÏÔÊ¾µÄºº×Ö,
-              ÕâÀï×ÖÌåµÄ¿ífont_widthµÄÖµ±ØĞëÓëÓÃ×ÖÄ£ÖÆ×÷Èí¼şÉú³É×ÖÄ£Ê±µÄµãÕóÖµ´óĞ¡Ò»ÖÂ;
-          font_height:ÎªÓÃ×ÖÄ£ÖÆ×÷Èí¼şÉú³É×ÖÄ£Ê±×ÖÌåµÄ¸ß,ÓÉÓÚÎÒµÄÆÁÏñËØÎª32*128-----0~7¹²8Ò³£¬Ã¿Ò³4¸öÎ»
-·µ»Ø  Öµ£ºÎŞ
-×¢Òâ£ºÓÃÕâÖÖ·½·¨À´ÏÔÊ¾ºº×ÖÒ»¶¨ÒªÂú×ãÓÃ×ÖÄ£Éú³ÉÈí¼şÉú³ÉµÄ×Ö¿íÓëµãÕó´óĞ¡ÏàÍ¬²ÅĞĞ£¬·ñÕßÈİÒ×ÂÒÂë
+å‡½æ•°åŠŸèƒ½ï¼šæ˜¾ç¤ºæ±‰å­—	
+å…¥å£å‚æ•°: xï¼šè¡¨ç¤ºæ˜¾ç¤ºçš„æ°´å¹³åæ ‡; y: è¡¨ç¤ºæ˜¾ç¤ºçš„å‚ç›´åæ ‡;
+          no: è¡¨ç¤ºè¦æ˜¾ç¤ºçš„æ±‰å­—ï¼ˆæ¨¡ç»„ï¼‰åœ¨hzk[][]æ•°ç»„ä¸­çš„è¡Œå·,é€šè¿‡è¡Œå·æ¥ç¡®å®šåœ¨æ•°ç»„ä¸­è¦æ˜¾ç¤ºçš„æ±‰å­—,
+              è¿™é‡Œå­—ä½“çš„å®½font_widthçš„å€¼å¿…é¡»ä¸ç”¨å­—æ¨¡åˆ¶ä½œè½¯ä»¶ç”Ÿæˆå­—æ¨¡æ—¶çš„ç‚¹é˜µå€¼å¤§å°ä¸€è‡´;
+          font_height:ä¸ºç”¨å­—æ¨¡åˆ¶ä½œè½¯ä»¶ç”Ÿæˆå­—æ¨¡æ—¶å­—ä½“çš„é«˜,ç”±äºæˆ‘çš„å±åƒç´ ä¸º32*128-----0~7å…±8é¡µï¼Œæ¯é¡µ4ä¸ªä½
+è¿”å›  å€¼ï¼šæ— 
+æ³¨æ„ï¼šç”¨è¿™ç§æ–¹æ³•æ¥æ˜¾ç¤ºæ±‰å­—ä¸€å®šè¦æ»¡è¶³ç”¨å­—æ¨¡ç”Ÿæˆè½¯ä»¶ç”Ÿæˆçš„å­—å®½ä¸ç‚¹é˜µå¤§å°ç›¸åŒæ‰è¡Œï¼Œå¦è€…å®¹æ˜“ä¹±ç 
 **************************************************************************/	
 void OLED_ShowCHinese(u8 x,u8 y,u8 *str)
 { 
@@ -407,13 +407,13 @@ Input   : x: indicates the horizontal coordinates displayed; Y: the vertical coo
           font_height: the font is high for the use of the word mold, because my screen pixels are 32hours, 128----0~ 7, and four bits per page
 Output  : none
 Note: this method is used to show that the Chinese character must satisfy the size of the word that the word model generates the software to generate the same size as the dot matrix
-º¯Êı¹¦ÄÜ£ºÏÔÊ¾ºº×Ö	
-Èë¿Ú²ÎÊı: x£º±íÊ¾ÏÔÊ¾µÄË®Æ½×ø±ê; y: ±íÊ¾ÏÔÊ¾µÄ´¹Ö±×ø±ê;
-          no: ±íÊ¾ÒªÏÔÊ¾µÄºº×Ö£¨Ä£×é£©ÔÚhzk[][]Êı×éÖĞµÄĞĞºÅ,Í¨¹ıĞĞºÅÀ´È·¶¨ÔÚÊı×éÖĞÒªÏÔÊ¾µÄºº×Ö,
-              ÕâÀï×ÖÌåµÄ¿ífont_widthµÄÖµ±ØĞëÓëÓÃ×ÖÄ£ÖÆ×÷Èí¼şÉú³É×ÖÄ£Ê±µÄµãÕóÖµ´óĞ¡Ò»ÖÂ;
-          font_height:ÎªÓÃ×ÖÄ£ÖÆ×÷Èí¼şÉú³É×ÖÄ£Ê±×ÖÌåµÄ¸ß,ÓÉÓÚÎÒµÄÆÁÏñËØÎª32*128-----0~7¹²8Ò³£¬Ã¿Ò³4¸öÎ»
-·µ»Ø  Öµ£ºÎŞ
-×¢Òâ£ºÓÃÕâÖÖ·½·¨À´ÏÔÊ¾ºº×ÖÒ»¶¨ÒªÂú×ãÓÃ×ÖÄ£Éú³ÉÈí¼şÉú³ÉµÄ×Ö¿íÓëµãÕó´óĞ¡ÏàÍ¬²ÅĞĞ£¬·ñÕßÈİÒ×ÂÒÂë
+å‡½æ•°åŠŸèƒ½ï¼šæ˜¾ç¤ºæ±‰å­—	
+å…¥å£å‚æ•°: xï¼šè¡¨ç¤ºæ˜¾ç¤ºçš„æ°´å¹³åæ ‡; y: è¡¨ç¤ºæ˜¾ç¤ºçš„å‚ç›´åæ ‡;
+          no: è¡¨ç¤ºè¦æ˜¾ç¤ºçš„æ±‰å­—ï¼ˆæ¨¡ç»„ï¼‰åœ¨hzk[][]æ•°ç»„ä¸­çš„è¡Œå·,é€šè¿‡è¡Œå·æ¥ç¡®å®šåœ¨æ•°ç»„ä¸­è¦æ˜¾ç¤ºçš„æ±‰å­—,
+              è¿™é‡Œå­—ä½“çš„å®½font_widthçš„å€¼å¿…é¡»ä¸ç”¨å­—æ¨¡åˆ¶ä½œè½¯ä»¶ç”Ÿæˆå­—æ¨¡æ—¶çš„ç‚¹é˜µå€¼å¤§å°ä¸€è‡´;
+          font_height:ä¸ºç”¨å­—æ¨¡åˆ¶ä½œè½¯ä»¶ç”Ÿæˆå­—æ¨¡æ—¶å­—ä½“çš„é«˜,ç”±äºæˆ‘çš„å±åƒç´ ä¸º32*128-----0~7å…±8é¡µï¼Œæ¯é¡µ4ä¸ªä½
+è¿”å›  å€¼ï¼šæ— 
+æ³¨æ„ï¼šç”¨è¿™ç§æ–¹æ³•æ¥æ˜¾ç¤ºæ±‰å­—ä¸€å®šè¦æ»¡è¶³ç”¨å­—æ¨¡ç”Ÿæˆè½¯ä»¶ç”Ÿæˆçš„å­—å®½ä¸ç‚¹é˜µå¤§å°ç›¸åŒæ‰è¡Œï¼Œå¦è€…å®¹æ˜“ä¹±ç 
 **************************************************************************/	
 void OLED_ShowFont12(u8 x,u8 y,u8 *s)
 {
@@ -451,13 +451,13 @@ Input   : x: indicates the horizontal coordinates displayed; Y: the vertical coo
           font_height: the font is high for the use of the word mold, because my screen pixels are 32hours, 128----0~ 7, and four bits per page
 Output  : none
 Note: this method is used to show that the Chinese character must satisfy the size of the word that the word model generates the software to generate the same size as the dot matrix
-º¯Êı¹¦ÄÜ£ºÏÔÊ¾ºº×Ö	
-Èë¿Ú²ÎÊı: x£º±íÊ¾ÏÔÊ¾µÄË®Æ½×ø±ê; y: ±íÊ¾ÏÔÊ¾µÄ´¹Ö±×ø±ê;
-          no: ±íÊ¾ÒªÏÔÊ¾µÄºº×Ö£¨Ä£×é£©ÔÚhzk[][]Êı×éÖĞµÄĞĞºÅ,Í¨¹ıĞĞºÅÀ´È·¶¨ÔÚÊı×éÖĞÒªÏÔÊ¾µÄºº×Ö,
-              ÕâÀï×ÖÌåµÄ¿ífont_widthµÄÖµ±ØĞëÓëÓÃ×ÖÄ£ÖÆ×÷Èí¼şÉú³É×ÖÄ£Ê±µÄµãÕóÖµ´óĞ¡Ò»ÖÂ;
-          font_height:ÎªÓÃ×ÖÄ£ÖÆ×÷Èí¼şÉú³É×ÖÄ£Ê±×ÖÌåµÄ¸ß,ÓÉÓÚÎÒµÄÆÁÏñËØÎª32*128-----0~7¹²8Ò³£¬Ã¿Ò³4¸öÎ»
-·µ»Ø  Öµ£ºÎŞ
-×¢Òâ£ºÓÃÕâÖÖ·½·¨À´ÏÔÊ¾ºº×ÖÒ»¶¨ÒªÂú×ãÓÃ×ÖÄ£Éú³ÉÈí¼şÉú³ÉµÄ×Ö¿íÓëµãÕó´óĞ¡ÏàÍ¬²ÅĞĞ£¬·ñÕßÈİÒ×ÂÒÂë
+å‡½æ•°åŠŸèƒ½ï¼šæ˜¾ç¤ºæ±‰å­—	
+å…¥å£å‚æ•°: xï¼šè¡¨ç¤ºæ˜¾ç¤ºçš„æ°´å¹³åæ ‡; y: è¡¨ç¤ºæ˜¾ç¤ºçš„å‚ç›´åæ ‡;
+          no: è¡¨ç¤ºè¦æ˜¾ç¤ºçš„æ±‰å­—ï¼ˆæ¨¡ç»„ï¼‰åœ¨hzk[][]æ•°ç»„ä¸­çš„è¡Œå·,é€šè¿‡è¡Œå·æ¥ç¡®å®šåœ¨æ•°ç»„ä¸­è¦æ˜¾ç¤ºçš„æ±‰å­—,
+              è¿™é‡Œå­—ä½“çš„å®½font_widthçš„å€¼å¿…é¡»ä¸ç”¨å­—æ¨¡åˆ¶ä½œè½¯ä»¶ç”Ÿæˆå­—æ¨¡æ—¶çš„ç‚¹é˜µå€¼å¤§å°ä¸€è‡´;
+          font_height:ä¸ºç”¨å­—æ¨¡åˆ¶ä½œè½¯ä»¶ç”Ÿæˆå­—æ¨¡æ—¶å­—ä½“çš„é«˜,ç”±äºæˆ‘çš„å±åƒç´ ä¸º32*128-----0~7å…±8é¡µï¼Œæ¯é¡µ4ä¸ªä½
+è¿”å›  å€¼ï¼šæ— 
+æ³¨æ„ï¼šç”¨è¿™ç§æ–¹æ³•æ¥æ˜¾ç¤ºæ±‰å­—ä¸€å®šè¦æ»¡è¶³ç”¨å­—æ¨¡ç”Ÿæˆè½¯ä»¶ç”Ÿæˆçš„å­—å®½ä¸ç‚¹é˜µå¤§å°ç›¸åŒæ‰è¡Œï¼Œå¦è€…å®¹æ˜“ä¹±ç 
 **************************************************************************/	
 void OLED_ShowCHinese12(u8 x,u8 y,u8 *str)
 { 
@@ -479,9 +479,9 @@ void OLED_ShowCHinese12(u8 x,u8 y,u8 *str)
 Function: Set the coordinates (position) displayed on the screen.
 Input   : x, y: starting point coordinates
 Output  : none
-º¯Êı¹¦ÄÜ£ºÉèÖÃºº×ÖÔÚÆÁÄ»ÉÏÏÔÊ¾µÄ×ø±ê£¨Î»ÖÃ£©
-Èë¿Ú²ÎÊı: x,y :Æğµã×ø±ê
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šè®¾ç½®æ±‰å­—åœ¨å±å¹•ä¸Šæ˜¾ç¤ºçš„åæ ‡ï¼ˆä½ç½®ï¼‰
+å…¥å£å‚æ•°: x,y :èµ·ç‚¹åæ ‡
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/	  
 void OLED_Set_Pos(unsigned char x, unsigned char y)
 { 	
@@ -490,7 +490,7 @@ void OLED_Set_Pos(unsigned char x, unsigned char y)
 	 OLED_WR_Byte((x&0x0f),OLED_CMD); 
 } 
 
-//OLEDÏÔÊ¾µçÎ»Æ÷º¯Êı
+//OLEDæ˜¾ç¤ºç”µä½å™¨å‡½æ•°
 void OLED_Show_POT(void)
 { 
 	 u8 i;
@@ -501,7 +501,7 @@ void OLED_Show_POT(void)
   }
 }
 
-//OLEDÏÔÊ¾CCD»­µãº¯Êı
+//OLEDæ˜¾ç¤ºCCDç”»ç‚¹å‡½æ•°
 void OLED_DrawPoint_Shu(u8 x,u8 y,u8 t)
 { 
 	 u8 i=0;

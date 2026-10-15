@@ -6,7 +6,7 @@
 extern u8 OLED_GRAM[128][8];
 
 //Oled port macro definition
-//OLED¶Ë¿Úºê¶¨Òå
+//OLEDç«¯å£å®å®šä¹‰
 #define OLED_RST_Clr() PDout(12)=0   //RST
 #define OLED_RST_Set() PDout(12)=1   //RST
 
@@ -18,14 +18,14 @@ extern u8 OLED_GRAM[128][8];
 
 #define OLED_SDIN_Clr()  PDout(13)=0   //SDA
 #define OLED_SDIN_Set()  PDout(13)=1   //SDA
-#define OLED_CMD  0	//Command //Ğ´ÃüÁî
-#define OLED_DATA 1	//Data //Ğ´Êı¾İ
+#define OLED_CMD  0	//Command //å†™å‘½ä»¤
+#define OLED_DATA 1	//Data //å†™æ•°æ®
 
 #define OLED_Height			64
 #define OLED_Width			128
 
 //Oled control function
-//OLED¿ØÖÆÓÃº¯Êı
+//OLEDæ§åˆ¶ç”¨å‡½æ•°
 void OLED_WR_Byte(u8 dat,u8 cmd);	    
 void OLED_Display_On(void);
 void OLED_Display_Off(void);

@@ -2,13 +2,13 @@
 #define DELAY_TIME  delay_us(5); 
 
 //Button value reading, zero time storage
-//°´¼üÖµ¶ÁÈ¡£¬ÁãÊ±´æ´¢
+//æŒ‰é”®å€¼è¯»å–ï¼Œé›¶æ—¶å­˜å‚¨
 u16 Handkey;	
 //Start the order. Request data
-//¿ªÊ¼ÃüÁî¡£ÇëÇóÊı¾İ
+//å¼€å§‹å‘½ä»¤ã€‚è¯·æ±‚æ•°æ®
 u8 Comd[2]={0x01,0x42};	
 //Data store array
-//Êı¾İ´æ´¢Êı×é
+//æ•°æ®å­˜å‚¨æ•°ç»„
 u8 Data[9]={0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; 
 
 u16 MASK[]={
@@ -28,14 +28,14 @@ u16 MASK[]={
     PSB_RED,
     PSB_BLUE,
     PSB_PINK
-	}; //Key value and key name //°´¼üÖµÓë°´¼üÃû
+	}; //Key value and key name //æŒ‰é”®å€¼ä¸æŒ‰é”®å
 /**************************************************************************
 Function: Ps2 handle task
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£ºPS2ÊÖ±úÈÎÎñ
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šPS2æ‰‹æŸ„ä»»åŠ¡
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/	
 void pstwo_task(void *pvParameters)
 {
@@ -43,11 +43,11 @@ void pstwo_task(void *pvParameters)
     while(1)
     {	
 			//The task is run at 100hz
-			//´ËÈÎÎñÒÔ100HzµÄÆµÂÊÔËĞĞ 	
+			//æ­¤ä»»åŠ¡ä»¥100Hzçš„é¢‘ç‡è¿è¡Œ 	
 			vTaskDelayUntil(&lastWakeTime, F2T(RATE_100_HZ));
 			AKM_MONITOR_HEARTBEAT(AKM_MONITOR_HB_PS2);
 			//Read the ps2 data
-			//¶ÁÈ¡PS2µÄÊı¾İ	
+			//è¯»å–PS2çš„æ•°æ®	
       PS2_Read(); 	
     }
 }  
@@ -55,22 +55,22 @@ void pstwo_task(void *pvParameters)
 Function: Ps2 handle initializer
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£ºPS2ÊÖ±ú³õÊ¼»¯
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šPS2æ‰‹æŸ„åˆå§‹åŒ–
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/	
 void PS2_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
 	
 	//Enable the ability port clock
-	//Ê¹ÄÜ¶Ë¿ÚÊ±ÖÓ
+	//ä½¿èƒ½ç«¯å£æ—¶é’Ÿ
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;			//¶Ë¿ÚÅäÖÃ
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;		//ÆÕÍ¨ÊäÈëÄ£Ê½
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;			//ç«¯å£é…ç½®
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;		//æ™®é€šè¾“å…¥æ¨¡å¼
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;	//100M
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;		//ÏÂÀ­
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;		//ä¸‹æ‹‰
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_10|GPIO_Pin_12;		  
@@ -84,47 +84,47 @@ void PS2_Init(void)
 Function: Read the control of the ps2 handle
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£º¶ÁÈ¡PS2ÊÖ±úµÄ¿ØÖÆÁ¿
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šè¯»å–PS2æ‰‹æŸ„çš„æ§åˆ¶é‡
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/	
 void PS2_Read(void)
 {
 	static int Strat;
 
 	//Reading key
-  //¶ÁÈ¡°´¼ü¼üÖµ
+  //è¯»å–æŒ‰é”®é”®å€¼
 	PS2_KEY=PS2_DataKey(); 
 	//Read the analog of the remote sensing x axis on the left
-  //¶ÁÈ¡×ó±ßÒ£¸ĞXÖá·½ÏòµÄÄ£ÄâÁ¿	
+  //è¯»å–å·¦è¾¹é¥æ„ŸXè½´æ–¹å‘çš„æ¨¡æ‹Ÿé‡	
 	PS2_LX=PS2_AnologData(PSS_LX); 
 	//Read the analog of the directional direction of remote sensing on the left
-  //¶ÁÈ¡×ó±ßÒ£¸ĞYÖá·½ÏòµÄÄ£ÄâÁ¿	
+  //è¯»å–å·¦è¾¹é¥æ„ŸYè½´æ–¹å‘çš„æ¨¡æ‹Ÿé‡	
 	PS2_LY=PS2_AnologData(PSS_LY);
 	//Read the analog of the remote sensing x axis
-  //¶ÁÈ¡ÓÒ±ßÒ£¸ĞXÖá·½ÏòµÄÄ£ÄâÁ¿  
+  //è¯»å–å³è¾¹é¥æ„ŸXè½´æ–¹å‘çš„æ¨¡æ‹Ÿé‡  
 	PS2_RX=PS2_AnologData(PSS_RX);
 	//Read the analog of the directional direction of the remote sensing y axis
-  //¶ÁÈ¡ÓÒ±ßÒ£¸ĞYÖá·½ÏòµÄÄ£ÄâÁ¿  
+  //è¯»å–å³è¾¹é¥æ„ŸYè½´æ–¹å‘çš„æ¨¡æ‹Ÿé‡  
 	PS2_RY=PS2_AnologData(PSS_RY);  
 
 	if(PS2_KEY==4&&PS2_ON_Flag==0) 
 		//The start button on the // handle is pressed
-		//ÊÖ±úÉÏµÄStart°´¼ü±»°´ÏÂ
+		//æ‰‹æŸ„ä¸Šçš„StartæŒ‰é”®è¢«æŒ‰ä¸‹
 		Strat=1; 
 	
 	if(Strat&&(PS2_LY<118)&&PS2_ON_Flag==0&&Deviation_Count>=CONTROL_DELAY)
 		//When the button is pressed, you need to push the right side forward to the formal ps2 control car
-		//Start°´¼ü±»°´ÏÂºó£¬ĞèÒªÍÆÏÂÓÒ±ßÇ°½ø¸Ë£¬²Å¿ÉÒÔÕıÊ½PS2¿ØÖÆĞ¡³µ
+		//StartæŒ‰é”®è¢«æŒ‰ä¸‹åï¼Œéœ€è¦æ¨ä¸‹å³è¾¹å‰è¿›æ†ï¼Œæ‰å¯ä»¥æ­£å¼PS2æ§åˆ¶å°è½¦
 		PS2_ON_Flag=1,Remote_ON_Flag=0,APP_ON_Flag=0,CAN_ON_Flag=0,Usart1_ON_Flag=0,Usart5_ON_Flag=0;  
 }
 /**************************************************************************
 Function: Send commands to the handle
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£ºÏòÊÖ±ú·¢ËÍÃüÁî
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šå‘æ‰‹æŸ„å‘é€å‘½ä»¤
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/	
 void PS2_Cmd(u8 CMD)
 {
@@ -134,11 +134,11 @@ void PS2_Cmd(u8 CMD)
 	{
 		if(ref&CMD)
 		{
-			DO_H;     //Output a control bit //Êä³öÒ»Î»¿ØÖÆÎ»
+			DO_H;     //Output a control bit //è¾“å‡ºä¸€ä½æ§åˆ¶ä½
 		}
 		else DO_L;
 
-		CLK_H;      //Clock lift //Ê±ÖÓÀ­¸ß
+		CLK_H;      //Clock lift //æ—¶é’Ÿæ‹‰é«˜
 		DELAY_TIME;
 		CLK_L;
 		DELAY_TIME;
@@ -152,15 +152,15 @@ void PS2_Cmd(u8 CMD)
 Function: Whether it is a red light mode, 0x41= analog green light, 0x73= analog red light
 Input   : none
 Output  : 0: red light mode, other: other modes
-º¯Êı¹¦ÄÜ£ºÅĞ¶ÏÊÇ·ñÎªºìµÆÄ£Ê½,0x41=Ä£ÄâÂÌµÆ£¬0x73=Ä£ÄâºìµÆ
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£º0£ººìµÆÄ£Ê½£¬ÆäËû£ºÆäËûÄ£Ê½
+å‡½æ•°åŠŸèƒ½ï¼šåˆ¤æ–­æ˜¯å¦ä¸ºçº¢ç¯æ¨¡å¼,0x41=æ¨¡æ‹Ÿç»¿ç¯ï¼Œ0x73=æ¨¡æ‹Ÿçº¢ç¯
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼š0ï¼šçº¢ç¯æ¨¡å¼ï¼Œå…¶ä»–ï¼šå…¶ä»–æ¨¡å¼
 **************************************************************************/	
 u8 PS2_RedLight(void)
 {
 	CS_L;
-	PS2_Cmd(Comd[0]);  //Start orders //¿ªÊ¼ÃüÁî
-	PS2_Cmd(Comd[1]);  //Request data //ÇëÇóÊı¾İ
+	PS2_Cmd(Comd[0]);  //Start orders //å¼€å§‹å‘½ä»¤
+	PS2_Cmd(Comd[1]);  //Request data //è¯·æ±‚æ•°æ®
 	CS_H;
 	if( Data[1] == 0X73)   return 0 ;
 	else return 1;
@@ -170,18 +170,18 @@ u8 PS2_RedLight(void)
 Function: Read the handle data
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£º¶ÁÈ¡ÊÖ±úÊı¾İ
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šè¯»å–æ‰‹æŸ„æ•°æ®
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/	
 void PS2_ReadData(void)
 {
 	volatile u8 byte=0;
 	volatile u16 ref=0x01;
 	CS_L;
-	PS2_Cmd(Comd[0]);  //Start orders //¿ªÊ¼ÃüÁî
-	PS2_Cmd(Comd[1]);  //Request data //ÇëÇóÊı¾İ
-	for(byte=2;byte<9;byte++) //Start receiving data //¿ªÊ¼½ÓÊÜÊı¾İ
+	PS2_Cmd(Comd[0]);  //Start orders //å¼€å§‹å‘½ä»¤
+	PS2_Cmd(Comd[1]);  //Request data //è¯·æ±‚æ•°æ®
+	for(byte=2;byte<9;byte++) //Start receiving data //å¼€å§‹æ¥å—æ•°æ®
 	{
 		for(ref=0x01;ref<0x100;ref<<=1)
 		{
@@ -201,9 +201,9 @@ void PS2_ReadData(void)
 Function: Handle the data of the read 2 and handle only the key parts
 Input   : none
 Output  : 0: only one button presses the next time; No press
-º¯Êı¹¦ÄÜ£º¶Ô¶Á³öÀ´µÄPS2µÄÊı¾İ½øĞĞ´¦Àí,Ö»´¦Àí°´¼ü²¿·Ö 
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£º0: Ö»ÓĞÒ»¸ö°´¼ü°´ÏÂÊ±°´ÏÂ; 1: Î´°´ÏÂ
+å‡½æ•°åŠŸèƒ½ï¼šå¯¹è¯»å‡ºæ¥çš„PS2çš„æ•°æ®è¿›è¡Œå¤„ç†,åªå¤„ç†æŒ‰é”®éƒ¨åˆ† 
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼š0: åªæœ‰ä¸€ä¸ªæŒ‰é”®æŒ‰ä¸‹æ—¶æŒ‰ä¸‹; 1: æœªæŒ‰ä¸‹
 **************************************************************************/	
 u8 PS2_DataKey()
 {
@@ -212,21 +212,21 @@ u8 PS2_DataKey()
 	PS2_ClearData();
 	PS2_ReadData();
 
-	Handkey=(Data[4]<<8)|Data[3]; //This is 16 buttons, pressed down to 0, and not pressed for 1  //ÕâÊÇ16¸ö°´¼ü£¬°´ÏÂÎª0£¬Î´°´ÏÂÎª1
+	Handkey=(Data[4]<<8)|Data[3]; //This is 16 buttons, pressed down to 0, and not pressed for 1  //è¿™æ˜¯16ä¸ªæŒ‰é”®ï¼ŒæŒ‰ä¸‹ä¸º0ï¼ŒæœªæŒ‰ä¸‹ä¸º1
 	for(index=0;index<16;index++)
 	{	    
 		if((Handkey&(1<<(MASK[index]-1)))==0)
 		return index+1;
 	}
-	return 0;  //No buttons //Ã»ÓĞÈÎºÎ°´¼ü°´ÏÂ
+	return 0;  //No buttons //æ²¡æœ‰ä»»ä½•æŒ‰é”®æŒ‰ä¸‹
 }
 /**************************************************************************
 Function: Get a simulation of a rocker
 Input   : Rocker
 Output  : Simulation of rocker, range 0~ 256
-º¯Êı¹¦ÄÜ£ºµÃµ½Ò»¸öÒ¡¸ËµÄÄ£ÄâÁ¿
-Èë¿Ú²ÎÊı£ºÒ¡¸Ë
-·µ»Ø  Öµ£ºÒ¡¸ËµÄÄ£ÄâÁ¿, ·¶Î§0~256
+å‡½æ•°åŠŸèƒ½ï¼šå¾—åˆ°ä¸€ä¸ªæ‘‡æ†çš„æ¨¡æ‹Ÿé‡
+å…¥å£å‚æ•°ï¼šæ‘‡æ†
+è¿”å›  å€¼ï¼šæ‘‡æ†çš„æ¨¡æ‹Ÿé‡, èŒƒå›´0~256
 **************************************************************************/
 u8 PS2_AnologData(u8 button)
 {
@@ -236,9 +236,9 @@ u8 PS2_AnologData(u8 button)
 Function: Clear data buffer
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£ºÇå³ıÊı¾İ»º³åÇø
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šæ¸…é™¤æ•°æ®ç¼“å†²åŒº
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void PS2_ClearData()
 {
@@ -251,17 +251,17 @@ Function: Handle vibration function
 Input   : motor1: the right small vibrator, 0x00, other
           motor2: the left big shock motor 0x40~ 0xff motor is open, and the value is greater
 Output  : none
-º¯Êı¹¦ÄÜ£ºÊÖ±úÕğ¶¯º¯Êı
-Èë¿Ú²ÎÊı£ºmotor1:ÓÒ²àĞ¡Õğ¶¯µç»ú 0x00¹Ø£¬ÆäËû¿ª
-	        motor2:×ó²à´óÕğ¶¯µç»ú 0x40~0xFF µç»ú¿ª£¬ÖµÔ½´ó Õğ¶¯Ô½´ó
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šæ‰‹æŸ„éœ‡åŠ¨å‡½æ•°
+å…¥å£å‚æ•°ï¼šmotor1:å³ä¾§å°éœ‡åŠ¨ç”µæœº 0x00å…³ï¼Œå…¶ä»–å¼€
+	        motor2:å·¦ä¾§å¤§éœ‡åŠ¨ç”µæœº 0x40~0xFF ç”µæœºå¼€ï¼Œå€¼è¶Šå¤§ éœ‡åŠ¨è¶Šå¤§
+è¿”å›  å€¼ï¼šæ— 
 ******************************************************/
 void PS2_Vibration(u8 motor1, u8 motor2)
 {
 	CS_L;
 	delay_us(16);
-  PS2_Cmd(0x01); //Start order //¿ªÊ¼ÃüÁî
-	PS2_Cmd(0x42); //Request data //ÇëÇóÊı¾İ
+  PS2_Cmd(0x01); //Start order //å¼€å§‹å‘½ä»¤
+	PS2_Cmd(0x42); //Request data //è¯·æ±‚æ•°æ®
 	PS2_Cmd(0X00);
 	PS2_Cmd(motor1);
 	PS2_Cmd(motor2);
@@ -276,9 +276,9 @@ void PS2_Vibration(u8 motor1, u8 motor2)
 Function: Short press
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£º¶Ì°´
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šçŸ­æŒ‰
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void PS2_ShortPoll(void)
 {
@@ -296,9 +296,9 @@ void PS2_ShortPoll(void)
 Function: Enter configuration
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£º½øÈëÅäÖÃ
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šè¿›å…¥é…ç½®
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void PS2_EnterConfing(void)
 {
@@ -320,9 +320,9 @@ void PS2_EnterConfing(void)
 Function: Send mode Settings
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£º·¢ËÍÄ£Ê½ÉèÖÃ
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šå‘é€æ¨¡å¼è®¾ç½®
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void PS2_TurnOnAnalogMode(void)
 {
@@ -330,9 +330,9 @@ void PS2_TurnOnAnalogMode(void)
 	PS2_Cmd(0x01);  
 	PS2_Cmd(0x44);  
 	PS2_Cmd(0X00);
-	PS2_Cmd(0x01); //analog=0x01;digital=0x00  Software Settings send mode Èí¼şÉèÖÃ·¢ËÍÄ£Ê½
-	PS2_Cmd(0x03); //0x03 lock storage setup, which cannot be set by the key "mode" set mode. //0x03Ëø´æÉèÖÃ£¬¼´²»¿ÉÍ¨¹ı°´¼ü¡°MODE¡±ÉèÖÃÄ£Ê½¡£
-				         //0xee non-locking software Settings can be set by the key "mode" set mode.//0xEE²»Ëø´æÈí¼şÉèÖÃ£¬¿ÉÍ¨¹ı°´¼ü¡°MODE¡±ÉèÖÃÄ£Ê½¡£
+	PS2_Cmd(0x01); //analog=0x01;digital=0x00  Software Settings send mode è½¯ä»¶è®¾ç½®å‘é€æ¨¡å¼
+	PS2_Cmd(0x03); //0x03 lock storage setup, which cannot be set by the key "mode" set mode. //0x03é”å­˜è®¾ç½®ï¼Œå³ä¸å¯é€šè¿‡æŒ‰é”®â€œMODEâ€è®¾ç½®æ¨¡å¼ã€‚
+				         //0xee non-locking software Settings can be set by the key "mode" set mode.//0xEEä¸é”å­˜è½¯ä»¶è®¾ç½®ï¼Œå¯é€šè¿‡æŒ‰é”®â€œMODEâ€è®¾ç½®æ¨¡å¼ã€‚
 	PS2_Cmd(0X00);
 	PS2_Cmd(0X00);
 	PS2_Cmd(0X00);
@@ -344,9 +344,9 @@ void PS2_TurnOnAnalogMode(void)
 Function: Vibration setting
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£ºÕñ¶¯ÉèÖÃ
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šæŒ¯åŠ¨è®¾ç½®
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void PS2_VibrationMode(void)
 {
@@ -364,9 +364,9 @@ void PS2_VibrationMode(void)
 Function: Complete and save the configuration
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£ºÍê³É²¢±£´æÅäÖÃ
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šå®Œæˆå¹¶ä¿å­˜é…ç½®
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void PS2_ExitConfing(void)
 {
@@ -388,27 +388,27 @@ void PS2_ExitConfing(void)
 Function: Handle configuration initialization
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£ºÊÖ±úÅäÖÃ³õÊ¼»¯
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šæ‰‹æŸ„é…ç½®åˆå§‹åŒ–
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void PS2_SetInit(void)
 {
 	PS2_ShortPoll();
 	PS2_ShortPoll();
 	PS2_ShortPoll();
-	PS2_EnterConfing();		  //Enter configuration mode //½øÈëÅäÖÃÄ£Ê½
-	PS2_TurnOnAnalogMode();	//The "traffic light" configuration mode and select whether to save //¡°ºìÂÌµÆ¡±ÅäÖÃÄ£Ê½£¬²¢Ñ¡ÔñÊÇ·ñ±£´æ
-	//PS2_VibrationMode();	//Open vibration mode //¿ªÆôÕğ¶¯Ä£Ê½
-	PS2_ExitConfing();		  //Complete and save the configuration //Íê³É²¢±£´æÅäÖÃ
+	PS2_EnterConfing();		  //Enter configuration mode //è¿›å…¥é…ç½®æ¨¡å¼
+	PS2_TurnOnAnalogMode();	//The "traffic light" configuration mode and select whether to save //â€œçº¢ç»¿ç¯â€é…ç½®æ¨¡å¼ï¼Œå¹¶é€‰æ‹©æ˜¯å¦ä¿å­˜
+	//PS2_VibrationMode();	//Open vibration mode //å¼€å¯éœ‡åŠ¨æ¨¡å¼
+	PS2_ExitConfing();		  //Complete and save the configuration //å®Œæˆå¹¶ä¿å­˜é…ç½®
 }
 /**************************************************************************
 Function: Read the handle information
 Input   : none
 Output  : none
-º¯Êı¹¦ÄÜ£º¶ÁÈ¡ÊÖ±úĞÅÏ¢
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šè¯»å–æ‰‹æŸ„ä¿¡æ¯
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void PS2_Receive (void)
 {

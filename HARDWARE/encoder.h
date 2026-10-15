@@ -4,7 +4,7 @@
 #include "system.h"
 
 // No larger than 65535, because the timer of STM32F103 is 16 bit
-//²»¿É´óÓÚ65535£¬ÒòÎªSTM32F103µÄ¶¨Ê±Æ÷ÊÇ16Î»µÄ
+//ä¸å¯å¤§äº65535ï¼Œå› ä¸ºSTM32F103çš„å®šæ—¶å™¨æ˜¯16ä½çš„
 #define ENCODER_TIM_PERIOD (u16)(65535)   
 
 void Encoder_Init_TIM2(void);

@@ -4,8 +4,8 @@
 #include "system.h"
  
 //CAN1 receives RX0 interrupt enablement
-//CAN1½ÓÊÕRX0ÖĞ¶ÏÊ¹ÄÜ
-#define CAN1_RX0_INT_ENABLE	1	//0, not enabling;1, can make //0,²»Ê¹ÄÜ; 1,Ê¹ÄÜ								    		
+//CAN1æ¥æ”¶RX0ä¸­æ–­ä½¿èƒ½
+#define CAN1_RX0_INT_ENABLE	1	//0, not enabling;1, can make //0,ä¸ä½¿èƒ½; 1,ä½¿èƒ½								    		
 
 u8 CAN1_Mode_Init(u8 tsjw,u8 tbs2,u8 tbs1,u16 brp,u8 mode);
 u8 CAN1_Tx_Msg(u32 id,u8 ide,u8 rtr,u8 len,u8 *dat);		

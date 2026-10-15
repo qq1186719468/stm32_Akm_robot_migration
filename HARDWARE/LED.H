@@ -3,8 +3,8 @@
 #include "sys.h"
 #include "system.h"
 
-#define LED_TASK_PRIO		3     //Task priority //ÈÎÎñÓÅÏÈ¼¶
-#define LED_STK_SIZE 		128   //Task stack size //ÈÎÎñ¶ÑÕ»´óĞ¡
+#define LED_TASK_PRIO		3     //Task priority //ä»»åŠ¡ä¼˜å…ˆçº§
+#define LED_STK_SIZE 		128   //Task stack size //ä»»åŠ¡å †æ ˆå¤§å°
 
 
 /*--------Buzzer control pin--------*/

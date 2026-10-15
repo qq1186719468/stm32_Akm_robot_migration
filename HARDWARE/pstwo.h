@@ -4,20 +4,20 @@
 #include "sys.h"
 #include "system.h"
       
-#define PS2_TASK_PRIO		4     //Task priority //ÈÎÎñÓÅÏÈ¼¶
-#define PS2_STK_SIZE 		256   //Task stack size //ÈÎÎñ¶ÑÕ»´óĞ¡
+#define PS2_TASK_PRIO		4     //Task priority //ä»»åŠ¡ä¼˜å…ˆçº§
+#define PS2_STK_SIZE 		256   //Task stack size //ä»»åŠ¡å †æ ˆå¤§å°
 
 
-#define DI   PEin(15)     //Input pin //ÊäÈëÒı½Å
+#define DI   PEin(15)     //Input pin //è¾“å…¥å¼•è„š
 
-#define DO_H PEout(12)=1   //Command height //ÃüÁîÎ»¸ß
-#define DO_L PEout(12)=0   //Command low //ÃüÁîÎ»µÍ
+#define DO_H PEout(12)=1   //Command height //å‘½ä»¤ä½é«˜
+#define DO_L PEout(12)=0   //Command low //å‘½ä»¤ä½ä½
 
-#define CS_H PEout(10)=1  //Cs pull up //CSÀ­¸ß
-#define CS_L PEout(10)=0  //Cs drawdown //CSÀ­µÍ
+#define CS_H PEout(10)=1  //Cs pull up //CSæ‹‰é«˜
+#define CS_L PEout(10)=0  //Cs drawdown //CSæ‹‰ä½
 
-#define CLK_H PEout(8)=1 //Clock lift //Ê±ÖÓÀ­¸ß
-#define CLK_L PEout(8)=0 //Clock down //Ê±ÖÓÀ­µÍ
+#define CLK_H PEout(8)=1 //Clock lift //æ—¶é’Ÿæ‹‰é«˜
+#define CLK_L PEout(8)=0 //Clock down //æ—¶é’Ÿæ‹‰ä½
 
 //These are our button constants
 #define PSB_SELECT      1
@@ -42,10 +42,10 @@
 #define PSB_CROSS       15
 #define PSB_SQUARE      16
 
-#define PSS_RX 5   //Right rocker x shaft data   //ÓÒÒ¡¸ËXÖáÊı¾İ
-#define PSS_RY 6   //The left rocker y axis data //×óÒ¡¸ËYÖáÊı¾İ
-#define PSS_LX 7   //Right rocker x axis data    //ÓÒÒ¡¸ËXÖáÊı¾İ
-#define PSS_LY 8   //The left rocker y axis data //×óÒ¡¸ËYÖáÊı¾İ
+#define PSS_RX 5   //Right rocker x shaft data   //å³æ‘‡æ†Xè½´æ•°æ®
+#define PSS_RY 6   //The left rocker y axis data //å·¦æ‘‡æ†Yè½´æ•°æ®
+#define PSS_LX 7   //Right rocker x axis data    //å³æ‘‡æ†Xè½´æ•°æ®
+#define PSS_LY 8   //The left rocker y axis data //å·¦æ‘‡æ†Yè½´æ•°æ®
 
 extern u8 Data[9];
 extern u16 MASK[16];

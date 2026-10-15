@@ -20,7 +20,7 @@
 
 #include "stm32f4xx.h"
 #include <stdint.h>
-#include "kaoya_protocol.h"
+#include "guo_protocol.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -62,10 +62,10 @@ uint32_t UART3_DMA_GetOverflowCount(void);
 uint32_t UART3_DMA_GetFrameCount(void);
 uint32_t UART3_DMA_GetCheckErrorCount(void);
 
-/* KaoYa AA55/CRC16解析及底层DMA/USART错误累计值。 */
-uint32_t UART3_DMA_GetKaoyaFrameCount(void);
-uint32_t UART3_DMA_GetKaoyaErrorCount(void);
-uint32_t UART3_DMA_GetKaoyaUnsupportedCount(void);
+/* Guo AA55/CRC16解析及底层DMA/USART错误累计值。 */
+uint32_t UART3_DMA_GetGuoFrameCount(void);
+uint32_t UART3_DMA_GetGuoErrorCount(void);
+uint32_t UART3_DMA_GetGuoUnsupportedCount(void);
 uint32_t UART3_DMA_GetDmaErrorCount(void);
 uint32_t UART3_DMA_GetUsartErrorCount(void);
 

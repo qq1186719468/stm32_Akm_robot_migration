@@ -1,4 +1,4 @@
-..\obj\kaoya_status.o: ..\HARDWARE\kaoya_status.c
-..\obj\kaoya_status.o: ..\HARDWARE\kaoya_status.h
-..\obj\kaoya_status.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
-..\obj\kaoya_status.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\guo_status.o: ..\HARDWARE\guo_status.c
+..\obj\guo_status.o: ..\HARDWARE\guo_status.h
+..\obj\guo_status.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+..\obj\guo_status.o: ..\HARDWARE\guo_protocol.h

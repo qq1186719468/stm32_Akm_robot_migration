@@ -63,7 +63,7 @@
 ..\obj\control_state.o: ..\HARDWARE\oled.h
 ..\obj\control_state.o: ..\HARDWARE\usartx.h
 ..\obj\control_state.o: ..\HARDWARE\uart3_dma.h
-..\obj\control_state.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\control_state.o: ..\HARDWARE\guo_protocol.h
 ..\obj\control_state.o: ..\HARDWARE\adc.h
 ..\obj\control_state.o: ..\HARDWARE\can.h
 ..\obj\control_state.o: ..\HARDWARE\motor.h

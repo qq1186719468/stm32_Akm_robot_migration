@@ -63,7 +63,7 @@
 ..\obj\timer.o: ..\HARDWARE\oled.h
 ..\obj\timer.o: ..\HARDWARE\usartx.h
 ..\obj\timer.o: ..\HARDWARE\uart3_dma.h
-..\obj\timer.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\timer.o: ..\HARDWARE\guo_protocol.h
 ..\obj\timer.o: ..\HARDWARE\adc.h
 ..\obj\timer.o: ..\HARDWARE\can.h
 ..\obj\timer.o: ..\HARDWARE\motor.h

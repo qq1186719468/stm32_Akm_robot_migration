@@ -3,7 +3,8 @@
 
 /*
  * 阿克曼迁移版IWDG门控任务。
- * 已打开硬件复位（AKM_IWDG_ENABLE=1）。IWDG不会在上电瞬间启动，
+ * 默认关闭硬件复位（AKM_IWDG_ENABLE=0）。完成专项硬件验证后可显式启用。
+ * 启用时IWDG不会在上电瞬间启动，
  * 只有启动/自检结束且Balance与MPU6050心跳连续正常两个250 ms窗口后才启动；
  * 启动后若核心任务不再推进，停止刷新并由硬件复位。
  */
@@ -18,7 +19,7 @@ extern "C" {
 #endif
 
 #ifndef AKM_IWDG_ENABLE
-#define AKM_IWDG_ENABLE            (1u)
+#define AKM_IWDG_ENABLE            (0u)
 #endif
 
 #define AKM_IWDG_TASK_PRIO         (3u)

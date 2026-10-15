@@ -63,7 +63,7 @@
 ..\obj\balance.o: ..\HARDWARE\oled.h
 ..\obj\balance.o: ..\HARDWARE\usartx.h
 ..\obj\balance.o: ..\HARDWARE\uart3_dma.h
-..\obj\balance.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\balance.o: ..\HARDWARE\guo_protocol.h
 ..\obj\balance.o: ..\HARDWARE\adc.h
 ..\obj\balance.o: ..\HARDWARE\can.h
 ..\obj\balance.o: ..\HARDWARE\motor.h

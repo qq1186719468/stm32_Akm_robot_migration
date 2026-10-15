@@ -1,5 +1,5 @@
-#ifndef __KAOYA_LOG_H
-#define __KAOYA_LOG_H
+#ifndef __GUO_LOG_H
+#define __GUO_LOG_H
 
 /*
  * C30D阿克曼迁移版的轻量异步事件日志。
@@ -43,27 +43,27 @@ typedef enum
 /*
  * 初始化日志队列。必须在创建LogTask前调用一次；重复调用不会覆盖已有队列。
  */
-void KaoyaLog_Init(void);
+void GuoLog_Init(void);
 
 /* 低优先级日志任务；只在任务上下文格式化和发送文本。 */
-void KaoyaLogTask(void *argument);
+void GuoLogTask(void *argument);
 
 /*
  * 投递整数事件。参数含义由event定义，统一使用有符号32位，避免在生产者
  * 中传递指向局部字符串或局部缓冲区的悬空指针。
  * 返回1表示进入队列，返回0表示未初始化或队列已满。
  */
-uint8_t KaoyaLog_Post(akm_log_event_t event,
+uint8_t GuoLog_Post(akm_log_event_t event,
                       int32_t arg0,
                       int32_t arg1,
                       int32_t arg2);
 
 /* 诊断接口：累计丢弃的事件数和已输出的事件数。 */
-uint32_t KaoyaLog_GetDropCount(void);
-uint32_t KaoyaLog_GetSentCount(void);
+uint32_t GuoLog_GetDropCount(void);
+uint32_t GuoLog_GetSentCount(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __KAOYA_LOG_H */
+#endif /* __GUO_LOG_H */

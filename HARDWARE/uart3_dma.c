@@ -6,8 +6,8 @@
 #include "stm32f4xx_usart.h"
 
 #include "system.h"
-#include "kaoya_protocol.h"
-#include "kaoya_log.h"
+#include "guo_protocol.h"
+#include "guo_log.h"
 
 #include <string.h>
 
@@ -43,16 +43,16 @@ static volatile uint16_t s_ring_tail;
 static volatile uint32_t s_overflow_count;
 static volatile uint32_t s_frame_count;
 static volatile uint32_t s_crc_error_count;
-static volatile uint32_t s_kaoya_frame_count;
-static volatile uint32_t s_kaoya_error_count;
-static volatile uint32_t s_kaoya_unsupported_count;
+static volatile uint32_t s_guo_frame_count;
+static volatile uint32_t s_guo_error_count;
+static volatile uint32_t s_guo_unsupported_count;
 static volatile uint32_t s_dma_error_count;
 static volatile uint32_t s_usart_error_count;
 static volatile uint8_t s_rx_loss_pending;
 static volatile uint8_t s_dma_recover_pending;
 static TickType_t s_last_command_log_tick;
 static volatile TaskHandle_t s_comm_task_handle;
-static kaoya_proto_parser_t s_kaoya_parser;
+static guo_proto_parser_t s_guo_parser;
 
 /*
  * TX缓冲区必须是静态存储期：DMA启动后，发送任务的局部数组可能已经
@@ -70,7 +70,7 @@ typedef enum
 {
     UART3_STREAM_IDLE = 0, /* 尚未被任何帧头占用 */
     UART3_STREAM_LEGACY,  /* 已看到0x7B，后续字节只交给旧11字节解析器 */
-    UART3_STREAM_KAOYA    /* 已看到0xAA，后续字节只交给AA55解析器 */
+    UART3_STREAM_GUO    /* 已看到0xAA，后续字节只交给AA55解析器 */
 } uart3_stream_mode_t;
 
 static uart3_stream_mode_t s_stream_mode;
@@ -297,19 +297,19 @@ static void apply_legacy_command(const uint8_t *frame)
 }
 
 /* 显式读取小端int16，避免结构体填充和CPU字节序造成协议不一致。 */
-static int16_t kaoya_read_i16(const uint8_t *data)
+static int16_t guo_read_i16(const uint8_t *data)
 {
     uint16_t value = (uint16_t)data[0] | (uint16_t)((uint16_t)data[1] << 8);
     return (int16_t)value;
 }
 
 /*
- * 应用已经通过帧头、长度和CRC校验的KaoYa速度命令。
+ * 应用已经通过帧头、长度和CRC校验的Guo速度命令。
  * payload单位为mm/s、mm/s、mrad/s；进入原控制链前换算为m/s和rad/s。
  * 阿克曼模式下Move_Z保存的是由Vz_to_Akm_Angle()得到的转向量，不是车体wz。
- * Apply a validated KaoYa velocity command in the same unit convention used
+ * Apply a validated Guo velocity command in the same unit convention used
  * by the original WHEELTEC control task (m/s, m/s, rad/s/steering angle). */
-static void apply_kaoya_command(const kaoya_proto_frame_t *frame)
+static void apply_guo_command(const guo_proto_frame_t *frame)
 {
     int16_t vx_mmps;
     int16_t vy_mmps;
@@ -320,9 +320,9 @@ static void apply_kaoya_command(const kaoya_proto_frame_t *frame)
     float new_move_z;
 
     if ((frame == NULL) ||
-        (frame->message_id != KAOYA_PROTO_CMD_VEL) ||
-        (frame->payload_length != KAOYA_PROTO_CMD_VEL_LEN) ||
-        ((frame->flags & (uint8_t)~KAOYA_PROTO_FLAG_ACK_REQ) != 0u))
+        (frame->message_id != GUO_PROTO_CMD_VEL) ||
+        (frame->payload_length != GUO_PROTO_CMD_VEL_LEN) ||
+        ((frame->flags & (uint8_t)~GUO_PROTO_FLAG_ACK_REQ) != 0u))
     {
         return;
     }
@@ -332,9 +332,9 @@ static void apply_kaoya_command(const kaoya_proto_frame_t *frame)
         return;
     }
 
-    vx_mmps = kaoya_read_i16(&frame->payload[0]);
-    vy_mmps = kaoya_read_i16(&frame->payload[2]);
-    wz_mradps = kaoya_read_i16(&frame->payload[4]);
+    vx_mmps = guo_read_i16(&frame->payload[0]);
+    vy_mmps = guo_read_i16(&frame->payload[2]);
+    wz_mradps = guo_read_i16(&frame->payload[4]);
 
     new_move_x = (float)vx_mmps * 0.001f;
     new_move_y = (float)vy_mmps * 0.001f;
@@ -368,27 +368,27 @@ static void apply_kaoya_command(const kaoya_proto_frame_t *frame)
     {
         s_last_command_log_tick = xTaskGetTickCount();
         /* 只投递原始协议值，格式化工作交给LogTask。 */
-        (void)KaoyaLog_Post(AKM_LOG_EVENT_COMMAND_OK,
+        (void)GuoLog_Post(AKM_LOG_EVENT_COMMAND_OK,
                             (int32_t)vx_mmps,
                             (int32_t)vy_mmps,
                             (int32_t)wz_mradps);
     }
 }
 
-static void kaoya_on_frame(const kaoya_proto_frame_t *frame, void *context)
+static void guo_on_frame(const guo_proto_frame_t *frame, void *context)
 {
     (void)context;
-    s_kaoya_frame_count++;
+    s_guo_frame_count++;
     /* 只实现速度指令；未知消息、长度或flags仅计数，不允许改变运动目标。 */
     if ((frame == NULL) ||
-        (frame->message_id != KAOYA_PROTO_CMD_VEL) ||
-        (frame->payload_length != KAOYA_PROTO_CMD_VEL_LEN) ||
-        ((frame->flags & (uint8_t)~KAOYA_PROTO_FLAG_ACK_REQ) != 0u))
+        (frame->message_id != GUO_PROTO_CMD_VEL) ||
+        (frame->payload_length != GUO_PROTO_CMD_VEL_LEN) ||
+        ((frame->flags & (uint8_t)~GUO_PROTO_FLAG_ACK_REQ) != 0u))
     {
-        s_kaoya_unsupported_count++;
+        s_guo_unsupported_count++;
         return;
     }
-    apply_kaoya_command(frame);
+    apply_guo_command(frame);
 }
 
 static void feed_check_parser(uint8_t byte)
@@ -414,7 +414,7 @@ static void reset_stream_parsers(void)
     s_legacy_count = 0u;
     s_check_mode_last = 0u;
     s_stream_started_tick = 0u;
-    KaoyaProto_Reset(&s_kaoya_parser);
+    GuoProto_Reset(&s_guo_parser);
 }
 
 static int feed_legacy_parser(uint8_t byte);
@@ -437,10 +437,10 @@ static void restart_from_header_byte(uint8_t byte)
         start_stream_mode(UART3_STREAM_LEGACY);
         (void)feed_legacy_parser(byte);
     }
-    else if (byte == KAOYA_PROTO_SOF0)
+    else if (byte == GUO_PROTO_SOF0)
     {
-        start_stream_mode(UART3_STREAM_KAOYA);
-        (void)KaoyaProto_FeedByte(&s_kaoya_parser, byte);
+        start_stream_mode(UART3_STREAM_GUO);
+        (void)GuoProto_FeedByte(&s_guo_parser, byte);
     }
 }
 
@@ -489,7 +489,7 @@ static int feed_legacy_parser(uint8_t byte)
  * decoder and changing the motion target accidentally. */
 static void feed_stream_byte(uint8_t byte)
 {
-    kaoya_proto_result_t result;
+    guo_proto_result_t result;
 
     if (s_stream_mode != UART3_STREAM_IDLE &&
         ((xTaskGetTickCount() - s_stream_started_tick) >
@@ -530,9 +530,9 @@ static void feed_stream_byte(uint8_t byte)
         return;
     }
 
-    if (s_stream_mode == UART3_STREAM_KAOYA)
+    if (s_stream_mode == UART3_STREAM_GUO)
     {
-        if ((s_kaoya_parser.state == KAOYA_PROTO_WAIT_SOF1) &&
+        if ((s_guo_parser.state == GUO_PROTO_WAIT_SOF1) &&
             (byte == FRAME_HEADER))
         {
             /* A stray AA followed by a legacy header: abandon the candidate
@@ -542,20 +542,20 @@ static void feed_stream_byte(uint8_t byte)
             (void)feed_legacy_parser(byte);
             return;
         }
-        result = KaoyaProto_FeedByte(&s_kaoya_parser, byte);
-        if (result != KAOYA_PROTO_NEED_MORE)
+        result = GuoProto_FeedByte(&s_guo_parser, byte);
+        if (result != GUO_PROTO_NEED_MORE)
         {
-            if ((result == KAOYA_PROTO_ERR_VERSION) ||
-                (result == KAOYA_PROTO_ERR_LENGTH) ||
-                (result == KAOYA_PROTO_ERR_CRC) ||
-                (result == KAOYA_PROTO_ERR_EOF))
+            if ((result == GUO_PROTO_ERR_VERSION) ||
+                (result == GUO_PROTO_ERR_LENGTH) ||
+                (result == GUO_PROTO_ERR_CRC) ||
+                (result == GUO_PROTO_ERR_EOF))
             {
-                s_kaoya_error_count++;
+                s_guo_error_count++;
             }
             reset_stream_parsers();
             restart_from_header_byte(byte);
         }
-        else if (s_kaoya_parser.state == KAOYA_PROTO_WAIT_SOF0)
+        else if (s_guo_parser.state == GUO_PROTO_WAIT_SOF0)
         {
             /* The parser rejected an overlapping AA candidate and already
              * resynchronized; release protocol ownership immediately. */
@@ -565,7 +565,7 @@ static void feed_stream_byte(uint8_t byte)
         return;
     }
 
-    /* Idle: AA starts KaoYa; 7B starts the fixed-length WHEELTEC frame. */
+    /* Idle: AA starts Guo; 7B starts the fixed-length WHEELTEC frame. */
     if (byte == FRAME_HEADER)
     {
         start_stream_mode(UART3_STREAM_LEGACY);
@@ -573,20 +573,20 @@ static void feed_stream_byte(uint8_t byte)
     }
     else
     {
-        result = KaoyaProto_FeedByte(&s_kaoya_parser, byte);
-        if (result == KAOYA_PROTO_NEED_MORE)
+        result = GuoProto_FeedByte(&s_guo_parser, byte);
+        if (result == GUO_PROTO_NEED_MORE)
         {
-            if (s_kaoya_parser.state != KAOYA_PROTO_WAIT_SOF0)
+            if (s_guo_parser.state != GUO_PROTO_WAIT_SOF0)
             {
-                start_stream_mode(UART3_STREAM_KAOYA);
+                start_stream_mode(UART3_STREAM_GUO);
             }
         }
-        else if ((result == KAOYA_PROTO_ERR_VERSION) ||
-                 (result == KAOYA_PROTO_ERR_LENGTH) ||
-                 (result == KAOYA_PROTO_ERR_CRC) ||
-                 (result == KAOYA_PROTO_ERR_EOF))
+        else if ((result == GUO_PROTO_ERR_VERSION) ||
+                 (result == GUO_PROTO_ERR_LENGTH) ||
+                 (result == GUO_PROTO_ERR_CRC) ||
+                 (result == GUO_PROTO_ERR_EOF))
         {
-            s_kaoya_error_count++;
+            s_guo_error_count++;
             restart_from_header_byte(byte);
         }
     }
@@ -606,9 +606,9 @@ void UART3_DMA_Init(void)
     s_overflow_count = 0u;
     s_frame_count = 0u;
     s_crc_error_count = 0u;
-    s_kaoya_frame_count = 0u;
-    s_kaoya_error_count = 0u;
-    s_kaoya_unsupported_count = 0u;
+    s_guo_frame_count = 0u;
+    s_guo_error_count = 0u;
+    s_guo_unsupported_count = 0u;
     s_dma_error_count = 0u;
     s_usart_error_count = 0u;
     s_rx_loss_pending = 0u;
@@ -624,7 +624,7 @@ void UART3_DMA_Init(void)
     s_legacy_count = 0u;
     s_check_mode_last = 0u;
     s_stream_started_tick = 0u;
-    KaoyaProto_Init(&s_kaoya_parser, kaoya_on_frame, NULL);
+    GuoProto_Init(&s_guo_parser, guo_on_frame, NULL);
 
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1, ENABLE);
 
@@ -883,19 +883,19 @@ uint32_t UART3_DMA_GetCheckErrorCount(void)
     return s_crc_error_count;
 }
 
-uint32_t UART3_DMA_GetKaoyaFrameCount(void)
+uint32_t UART3_DMA_GetGuoFrameCount(void)
 {
-    return s_kaoya_frame_count;
+    return s_guo_frame_count;
 }
 
-uint32_t UART3_DMA_GetKaoyaErrorCount(void)
+uint32_t UART3_DMA_GetGuoErrorCount(void)
 {
-    return s_kaoya_error_count;
+    return s_guo_error_count;
 }
 
-uint32_t UART3_DMA_GetKaoyaUnsupportedCount(void)
+uint32_t UART3_DMA_GetGuoUnsupportedCount(void)
 {
-    return s_kaoya_unsupported_count;
+    return s_guo_unsupported_count;
 }
 
 uint32_t UART3_DMA_GetDmaErrorCount(void)
@@ -1061,9 +1061,9 @@ void UART3_DMA_StreamIRQHandler(void) {}
 uint32_t UART3_DMA_GetOverflowCount(void) { return 0u; }
 uint32_t UART3_DMA_GetFrameCount(void) { return 0u; }
 uint32_t UART3_DMA_GetCheckErrorCount(void) { return 0u; }
-uint32_t UART3_DMA_GetKaoyaFrameCount(void) { return 0u; }
-uint32_t UART3_DMA_GetKaoyaErrorCount(void) { return 0u; }
-uint32_t UART3_DMA_GetKaoyaUnsupportedCount(void) { return 0u; }
+uint32_t UART3_DMA_GetGuoFrameCount(void) { return 0u; }
+uint32_t UART3_DMA_GetGuoErrorCount(void) { return 0u; }
+uint32_t UART3_DMA_GetGuoUnsupportedCount(void) { return 0u; }
 uint32_t UART3_DMA_GetDmaErrorCount(void) { return 0u; }
 uint32_t UART3_DMA_GetUsartErrorCount(void) { return 0u; }
 uint8_t UART3_DMA_TxTrySend(const uint8_t *data, uint16_t length)

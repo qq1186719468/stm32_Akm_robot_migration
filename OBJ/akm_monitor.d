@@ -63,7 +63,7 @@
 ..\obj\akm_monitor.o: ..\HARDWARE\oled.h
 ..\obj\akm_monitor.o: ..\HARDWARE\usartx.h
 ..\obj\akm_monitor.o: ..\HARDWARE\uart3_dma.h
-..\obj\akm_monitor.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\akm_monitor.o: ..\HARDWARE\guo_protocol.h
 ..\obj\akm_monitor.o: ..\HARDWARE\adc.h
 ..\obj\akm_monitor.o: ..\HARDWARE\can.h
 ..\obj\akm_monitor.o: ..\HARDWARE\motor.h
@@ -78,8 +78,8 @@
 ..\obj\akm_monitor.o: ..\HARDWARE\MPU6050\MPU6050.h
 ..\obj\akm_monitor.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\akm_monitor.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
-..\obj\akm_monitor.o: ..\HARDWARE\kaoya_uplink.h
+..\obj\akm_monitor.o: ..\HARDWARE\guo_uplink.h
 ..\obj\akm_monitor.o: ..\BALANCE\control_safety.h
-..\obj\akm_monitor.o: ..\HARDWARE\kaoya_log.h
+..\obj\akm_monitor.o: ..\HARDWARE\guo_log.h
 ..\obj\akm_monitor.o: ..\BALANCE\akm_watchdog.h
 ..\obj\akm_monitor.o: ..\BALANCE\tft_diag.h

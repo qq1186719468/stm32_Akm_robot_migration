@@ -1,3 +1,3 @@
-..\obj\kaoya_protocol.o: ..\HARDWARE\kaoya_protocol.c
-..\obj\kaoya_protocol.o: ..\HARDWARE\kaoya_protocol.h
-..\obj\kaoya_protocol.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+..\obj\guo_protocol.o: ..\HARDWARE\guo_protocol.c
+..\obj\guo_protocol.o: ..\HARDWARE\guo_protocol.h
+..\obj\guo_protocol.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdint.h

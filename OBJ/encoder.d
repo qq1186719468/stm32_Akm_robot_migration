@@ -63,7 +63,7 @@
 ..\obj\encoder.o: ..\HARDWARE\oled.h
 ..\obj\encoder.o: ..\HARDWARE\usartx.h
 ..\obj\encoder.o: ..\HARDWARE\uart3_dma.h
-..\obj\encoder.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\encoder.o: ..\HARDWARE\guo_protocol.h
 ..\obj\encoder.o: ..\HARDWARE\adc.h
 ..\obj\encoder.o: ..\HARDWARE\can.h
 ..\obj\encoder.o: ..\HARDWARE\motor.h

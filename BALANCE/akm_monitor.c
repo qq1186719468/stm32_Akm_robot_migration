@@ -5,9 +5,9 @@
 #include "motor.h"
 #include "uart3_dma.h"
 #include "MPU6050.h"
-#include "kaoya_uplink.h"
+#include "guo_uplink.h"
 #include "control_safety.h"
-#include "kaoya_log.h"
+#include "guo_log.h"
 #include "akm_watchdog.h"
 #include "tft_diag.h"
 
@@ -27,7 +27,7 @@ static uint32_t s_previous_heartbeat[AKM_MONITOR_HB_COUNT] = {0u};
  */
 volatile akm_status_snapshot_t g_akm_monitor_snapshot;
 static uint8_t s_previous_stop_reason = CONTROL_STOP_NONE;
-static uint32_t s_previous_kaoya_error_count = 0u;
+static uint32_t s_previous_guo_error_count = 0u;
 static uint32_t s_previous_dma_error_count = 0u;
 static uint8_t s_low_battery_latched = 0u;
 
@@ -225,36 +225,36 @@ void AkmMonitor_CollectSnapshot(void)
     next.uart_overflow_count = UART3_DMA_GetOverflowCount();
     next.legacy_frame_count = UART3_DMA_GetFrameCount();
     next.legacy_check_error_count = UART3_DMA_GetCheckErrorCount();
-    next.kaoya_frame_count = UART3_DMA_GetKaoyaFrameCount();
-    next.kaoya_error_count = UART3_DMA_GetKaoyaErrorCount();
-    next.kaoya_unsupported_count = UART3_DMA_GetKaoyaUnsupportedCount();
+    next.guo_frame_count = UART3_DMA_GetGuoFrameCount();
+    next.guo_error_count = UART3_DMA_GetGuoErrorCount();
+    next.guo_unsupported_count = UART3_DMA_GetGuoUnsupportedCount();
     next.dma_error_count = UART3_DMA_GetDmaErrorCount();
     next.usart_error_count = UART3_DMA_GetUsartErrorCount();
     next.tx_frame_count = UART3_DMA_GetTxFrameCount();
     next.tx_complete_count = UART3_DMA_GetTxCompleteCount();
     next.tx_drop_count = UART3_DMA_GetTxDropCount();
     next.tx_error_count = UART3_DMA_GetTxErrorCount();
-    next.log_drop_count = KaoyaLog_GetDropCount();
-    next.log_sent_count = KaoyaLog_GetSentCount();
+    next.log_drop_count = GuoLog_GetDropCount();
+    next.log_sent_count = GuoLog_GetSentCount();
 
     /* 只在计数/停止原因发生边沿时记录，避免每秒重复刷屏。 */
     if ((next.control_stop_reason != s_previous_stop_reason) &&
         (next.control_stop_reason == CONTROL_STOP_COMMAND_TIMEOUT))
     {
-        (void)KaoyaLog_Post(AKM_LOG_EVENT_COMMAND_TIMEOUT,
+        (void)GuoLog_Post(AKM_LOG_EVENT_COMMAND_TIMEOUT,
                             (int32_t)next.command_lost_count, 0, 0);
     }
     s_previous_stop_reason = next.control_stop_reason;
 
-    if (next.kaoya_error_count != s_previous_kaoya_error_count)
+    if (next.guo_error_count != s_previous_guo_error_count)
     {
-        (void)KaoyaLog_Post(AKM_LOG_EVENT_PROTOCOL_ERROR,
-                            (int32_t)next.kaoya_error_count, 0, 0);
-        s_previous_kaoya_error_count = next.kaoya_error_count;
+        (void)GuoLog_Post(AKM_LOG_EVENT_PROTOCOL_ERROR,
+                            (int32_t)next.guo_error_count, 0, 0);
+        s_previous_guo_error_count = next.guo_error_count;
     }
     if (next.dma_error_count != s_previous_dma_error_count)
     {
-        (void)KaoyaLog_Post(AKM_LOG_EVENT_DMA_ERROR,
+        (void)GuoLog_Post(AKM_LOG_EVENT_DMA_ERROR,
                             (int32_t)next.dma_error_count, 0, 0);
         s_previous_dma_error_count = next.dma_error_count;
     }
@@ -262,7 +262,7 @@ void AkmMonitor_CollectSnapshot(void)
     /* 低压事件只在下降沿记录；10.5 V回差用于防止阈值附近反复刷日志。 */
     if ((next.battery_mv < 10000u) && (s_low_battery_latched == 0u))
     {
-        (void)KaoyaLog_Post(AKM_LOG_EVENT_LOW_BATTERY,
+        (void)GuoLog_Post(AKM_LOG_EVENT_LOW_BATTERY,
                             (int32_t)next.battery_mv, 0, 0);
         s_low_battery_latched = 1u;
     }
@@ -319,7 +319,7 @@ void AkmMonitorTask(void *argument)
         /* The monitor task owns the snapshot and refreshes TFT at 1 Hz. */
         TftDiag_Update();
         /* 低频状态上报与快照同属诊断链；失败只丢本次帧，不影响控制。 */
-        (void)KaoyaUplink_TrySendLatest();
+        (void)GuoUplink_TrySendLatest();
         vTaskDelayUntil(&last_wake, (TickType_t)M2T(1000u));
     }
 }

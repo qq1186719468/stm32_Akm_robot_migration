@@ -1,4 +1,4 @@
-#include "kaoya_status_adapter.h"
+#include "guo_status_adapter.h"
 
 /*
  * MPU6050初始化在MPU6050.c中明确设置为：陀螺仪±500dps、加速度±2g。
@@ -44,9 +44,9 @@ static int16_t accel_to_centi_g(int16_t raw_count)
                            MPU6050_ACCEL_COUNTS_PER_G);
 }
 
-uint8_t KaoyaStatus_FromMonitorSnapshot(
+uint8_t GuoStatus_FromMonitorSnapshot(
     const akm_status_snapshot_t *snapshot,
-    kaoya_status_payload_t *payload)
+    guo_status_payload_t *payload)
 {
     float forward_speed;
 

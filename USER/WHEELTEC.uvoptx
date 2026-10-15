@@ -341,12 +341,12 @@
         <Ww>
           <count>38</count>
           <WinNumber>1</WinNumber>
-          <ItemText>kaoya_frame_count</ItemText>
+          <ItemText>guo_frame_count</ItemText>
         </Ww>
         <Ww>
           <count>39</count>
           <WinNumber>1</WinNumber>
-          <ItemText>kaoya_error_count</ItemText>
+          <ItemText>guo_error_count</ItemText>
         </Ww>
         <Ww>
           <count>40</count>
@@ -626,8 +626,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\HARDWARE\kaoya_protocol.c</PathWithFileName>
-      <FilenameWithoutPath>kaoya_protocol.c</FilenameWithoutPath>
+      <PathWithFileName>..\HARDWARE\guo_protocol.c</PathWithFileName>
+      <FilenameWithoutPath>guo_protocol.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -638,8 +638,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\HARDWARE\kaoya_status.c</PathWithFileName>
-      <FilenameWithoutPath>kaoya_status.c</FilenameWithoutPath>
+      <PathWithFileName>..\HARDWARE\guo_status.c</PathWithFileName>
+      <FilenameWithoutPath>guo_status.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -650,8 +650,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\HARDWARE\kaoya_status_adapter.c</PathWithFileName>
-      <FilenameWithoutPath>kaoya_status_adapter.c</FilenameWithoutPath>
+      <PathWithFileName>..\HARDWARE\guo_status_adapter.c</PathWithFileName>
+      <FilenameWithoutPath>guo_status_adapter.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -662,8 +662,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\HARDWARE\kaoya_uplink.c</PathWithFileName>
-      <FilenameWithoutPath>kaoya_uplink.c</FilenameWithoutPath>
+      <PathWithFileName>..\HARDWARE\guo_uplink.c</PathWithFileName>
+      <FilenameWithoutPath>guo_uplink.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -674,8 +674,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\HARDWARE\kaoya_log.c</PathWithFileName>
-      <FilenameWithoutPath>kaoya_log.c</FilenameWithoutPath>
+      <PathWithFileName>..\HARDWARE\guo_log.c</PathWithFileName>
+      <FilenameWithoutPath>guo_log.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

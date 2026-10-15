@@ -1,8 +1,8 @@
 """Read and validate AA55 status frames from XCOM/USB-TTL.
 
 Examples (PowerShell):
-  python tools/kaoya_serial_monitor.py --port COM8 --seconds 30
-  python tools/kaoya_serial_monitor.py --hex "AA 55 ... 66 BB"
+  python tools/guo_serial_monitor.py --port COM8 --seconds 30
+  python tools/guo_serial_monitor.py --hex "AA 55 ... 66 BB"
 
 The monitor is a host-side acceptance aid.  It does not claim that a valid
 status frame proves that the RX command path, motor output, or real vehicle
@@ -16,7 +16,7 @@ import struct
 import sys
 import time
 
-from kaoya_frame_tool import crc16_ccitt_false, parse_hex_bytes, parse_status_frame
+from guo_frame_tool import crc16_ccitt_false, parse_hex_bytes, parse_status_frame
 
 
 class StatusStreamDecoder(object):

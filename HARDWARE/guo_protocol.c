@@ -1,4 +1,4 @@
-#include "kaoya_protocol.h"
+#include "guo_protocol.h"
 
 /* 对单个字节更新CRC，便于状态机边接收边计算，不必二次遍历整帧。 */
 static uint16_t crc_update(uint16_t crc, uint8_t byte)
@@ -20,16 +20,16 @@ static uint16_t crc_update(uint16_t crc, uint8_t byte)
     return crc;
 }
 
-static void reset_to_header(kaoya_proto_parser_t *parser)
+static void reset_to_header(guo_proto_parser_t *parser)
 {
     /* payload内容无需清零，payload_length限定了合法回调可读取的范围。 */
-    parser->state = KAOYA_PROTO_WAIT_SOF0;
+    parser->state = GUO_PROTO_WAIT_SOF0;
     parser->payload_offset = 0u;
     parser->crc_calculated = 0xFFFFu;
     parser->crc_received = 0u;
 }
 
-void KaoyaProto_Reset(kaoya_proto_parser_t *parser)
+void GuoProto_Reset(guo_proto_parser_t *parser)
 {
     if (parser == 0)
     {
@@ -38,8 +38,8 @@ void KaoyaProto_Reset(kaoya_proto_parser_t *parser)
     reset_to_header(parser);
 }
 
-void KaoyaProto_Init(kaoya_proto_parser_t *parser,
-                     kaoya_proto_frame_callback_t callback,
+void GuoProto_Init(guo_proto_parser_t *parser,
+                     guo_proto_frame_callback_t callback,
                      void *context)
 {
     if (parser == 0)
@@ -58,12 +58,12 @@ void KaoyaProto_Init(kaoya_proto_parser_t *parser,
     reset_to_header(parser);
 }
 
-kaoya_proto_result_t KaoyaProto_FeedByte(kaoya_proto_parser_t *parser,
+guo_proto_result_t GuoProto_FeedByte(guo_proto_parser_t *parser,
                                           uint8_t byte)
 {
     if (parser == 0)
     {
-        return KAOYA_PROTO_NEED_MORE;
+        return GUO_PROTO_NEED_MORE;
     }
 
     /*
@@ -72,142 +72,142 @@ kaoya_proto_result_t KaoyaProto_FeedByte(kaoya_proto_parser_t *parser,
      */
     switch (parser->state)
     {
-    case KAOYA_PROTO_WAIT_SOF0:
-        if (byte == KAOYA_PROTO_SOF0)
+    case GUO_PROTO_WAIT_SOF0:
+        if (byte == GUO_PROTO_SOF0)
         {
-            parser->state = KAOYA_PROTO_WAIT_SOF1;
+            parser->state = GUO_PROTO_WAIT_SOF1;
         }
         break;
 
-    case KAOYA_PROTO_WAIT_SOF1:
-        if (byte == KAOYA_PROTO_SOF1)
+    case GUO_PROTO_WAIT_SOF1:
+        if (byte == GUO_PROTO_SOF1)
         {
-            parser->state = KAOYA_PROTO_READ_VERSION;
+            parser->state = GUO_PROTO_READ_VERSION;
             parser->payload_offset = 0u;
             parser->crc_calculated = 0xFFFFu;
         }
-        else if (byte == KAOYA_PROTO_SOF0)
+        else if (byte == GUO_PROTO_SOF0)
         {
             /* Preserve a possible overlapping AA AA 55 header. */
-            parser->state = KAOYA_PROTO_WAIT_SOF1;
+            parser->state = GUO_PROTO_WAIT_SOF1;
         }
         else
         {
-            parser->state = KAOYA_PROTO_WAIT_SOF0;
+            parser->state = GUO_PROTO_WAIT_SOF0;
         }
         break;
 
-    case KAOYA_PROTO_READ_VERSION:
+    case GUO_PROTO_READ_VERSION:
         parser->frame.version = byte;
         parser->crc_calculated = crc_update(parser->crc_calculated, byte);
-        if (byte != KAOYA_PROTO_VERSION)
+        if (byte != GUO_PROTO_VERSION)
         {
             reset_to_header(parser);
-            return KAOYA_PROTO_ERR_VERSION;
+            return GUO_PROTO_ERR_VERSION;
         }
-        parser->state = KAOYA_PROTO_READ_MESSAGE;
+        parser->state = GUO_PROTO_READ_MESSAGE;
         break;
 
-    case KAOYA_PROTO_READ_MESSAGE:
+    case GUO_PROTO_READ_MESSAGE:
         parser->frame.message_id = byte;
         parser->crc_calculated = crc_update(parser->crc_calculated, byte);
-        parser->state = KAOYA_PROTO_READ_FLAGS;
+        parser->state = GUO_PROTO_READ_FLAGS;
         break;
 
-    case KAOYA_PROTO_READ_FLAGS:
+    case GUO_PROTO_READ_FLAGS:
         parser->frame.flags = byte;
         parser->crc_calculated = crc_update(parser->crc_calculated, byte);
-        parser->state = KAOYA_PROTO_READ_SEQUENCE;
+        parser->state = GUO_PROTO_READ_SEQUENCE;
         break;
 
-    case KAOYA_PROTO_READ_SEQUENCE:
+    case GUO_PROTO_READ_SEQUENCE:
         parser->frame.sequence = byte;
         parser->crc_calculated = crc_update(parser->crc_calculated, byte);
-        parser->state = KAOYA_PROTO_READ_LENGTH_LOW;
+        parser->state = GUO_PROTO_READ_LENGTH_LOW;
         break;
 
-    case KAOYA_PROTO_READ_LENGTH_LOW:
+    case GUO_PROTO_READ_LENGTH_LOW:
         parser->frame.payload_length = (uint16_t)byte;
         parser->crc_calculated = crc_update(parser->crc_calculated, byte);
-        parser->state = KAOYA_PROTO_READ_LENGTH_HIGH;
+        parser->state = GUO_PROTO_READ_LENGTH_HIGH;
         break;
 
-    case KAOYA_PROTO_READ_LENGTH_HIGH:
+    case GUO_PROTO_READ_LENGTH_HIGH:
         parser->frame.payload_length |= (uint16_t)((uint16_t)byte << 8);
         parser->crc_calculated = crc_update(parser->crc_calculated, byte);
         /* 先做边界检查，再向payload[]写入，阻止恶意/噪声长度越界。 */
-        if (parser->frame.payload_length > KAOYA_PROTO_MAX_PAYLOAD)
+        if (parser->frame.payload_length > GUO_PROTO_MAX_PAYLOAD)
         {
             reset_to_header(parser);
-            return KAOYA_PROTO_ERR_LENGTH;
+            return GUO_PROTO_ERR_LENGTH;
         }
         parser->payload_offset = 0u;
         if (parser->frame.payload_length == 0u)
         {
-            parser->state = KAOYA_PROTO_READ_CRC_LOW;
+            parser->state = GUO_PROTO_READ_CRC_LOW;
         }
         else
         {
-            parser->state = KAOYA_PROTO_READ_PAYLOAD;
+            parser->state = GUO_PROTO_READ_PAYLOAD;
         }
         break;
 
-    case KAOYA_PROTO_READ_PAYLOAD:
+    case GUO_PROTO_READ_PAYLOAD:
         parser->frame.payload[parser->payload_offset++] = byte;
         parser->crc_calculated = crc_update(parser->crc_calculated, byte);
         if (parser->payload_offset >= parser->frame.payload_length)
         {
-            parser->state = KAOYA_PROTO_READ_CRC_LOW;
+            parser->state = GUO_PROTO_READ_CRC_LOW;
         }
         break;
 
-    case KAOYA_PROTO_READ_CRC_LOW:
+    case GUO_PROTO_READ_CRC_LOW:
         parser->crc_received = (uint16_t)byte;
-        parser->state = KAOYA_PROTO_READ_CRC_HIGH;
+        parser->state = GUO_PROTO_READ_CRC_HIGH;
         break;
 
-    case KAOYA_PROTO_READ_CRC_HIGH:
+    case GUO_PROTO_READ_CRC_HIGH:
         parser->crc_received |= (uint16_t)((uint16_t)byte << 8);
-        parser->state = KAOYA_PROTO_READ_EOF0;
+        parser->state = GUO_PROTO_READ_EOF0;
         break;
 
-    case KAOYA_PROTO_READ_EOF0:
-        if (byte != KAOYA_PROTO_EOF0)
+    case GUO_PROTO_READ_EOF0:
+        if (byte != GUO_PROTO_EOF0)
         {
             reset_to_header(parser);
-            return KAOYA_PROTO_ERR_EOF;
+            return GUO_PROTO_ERR_EOF;
         }
-        parser->state = KAOYA_PROTO_READ_EOF1;
+        parser->state = GUO_PROTO_READ_EOF1;
         break;
 
-    case KAOYA_PROTO_READ_EOF1:
-        if (byte != KAOYA_PROTO_EOF1)
+    case GUO_PROTO_READ_EOF1:
+        if (byte != GUO_PROTO_EOF1)
         {
             reset_to_header(parser);
-            return KAOYA_PROTO_ERR_EOF;
+            return GUO_PROTO_ERR_EOF;
         }
         /* 帧尾和CRC都正确后才允许回调上层。 */
         if (parser->crc_calculated != parser->crc_received)
         {
             reset_to_header(parser);
-            return KAOYA_PROTO_ERR_CRC;
+            return GUO_PROTO_ERR_CRC;
         }
         if (parser->callback != 0)
         {
             parser->callback(&parser->frame, parser->context);
         }
         reset_to_header(parser);
-        return KAOYA_PROTO_FRAME_OK;
+        return GUO_PROTO_FRAME_OK;
 
     default:
         reset_to_header(parser);
         break;
     }
 
-    return KAOYA_PROTO_NEED_MORE;
+    return GUO_PROTO_NEED_MORE;
 }
 
-uint16_t KaoyaProto_Feed(kaoya_proto_parser_t *parser,
+uint16_t GuoProto_Feed(guo_proto_parser_t *parser,
                           const uint8_t *data,
                           uint16_t length)
 {
@@ -222,7 +222,7 @@ uint16_t KaoyaProto_Feed(kaoya_proto_parser_t *parser,
     /* 批量接口内部仍复用逐字节状态机，拆包/粘包行为保持一致。 */
     for (index = 0u; index < length; index++)
     {
-        if (KaoyaProto_FeedByte(parser, data[index]) == KAOYA_PROTO_FRAME_OK)
+        if (GuoProto_FeedByte(parser, data[index]) == GUO_PROTO_FRAME_OK)
         {
             frame_count++;
         }
@@ -230,7 +230,7 @@ uint16_t KaoyaProto_Feed(kaoya_proto_parser_t *parser,
     return frame_count;
 }
 
-uint16_t KaoyaProto_Crc16CcittFalse(const uint8_t *data, uint16_t length)
+uint16_t GuoProto_Crc16CcittFalse(const uint8_t *data, uint16_t length)
 {
     uint16_t crc = 0xFFFFu;
     uint16_t index;

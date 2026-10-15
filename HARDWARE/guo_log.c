@@ -1,4 +1,4 @@
-#include "kaoya_log.h"
+#include "guo_log.h"
 
 #include "usartx.h"
 #include "akm_monitor.h"
@@ -107,7 +107,7 @@ static uint16_t format_record(const akm_log_record_t *record, char *text)
     return (uint16_t)length;
 }
 
-void KaoyaLog_Init(void)
+void GuoLog_Init(void)
 {
     if (s_log_queue == NULL)
     {
@@ -116,7 +116,7 @@ void KaoyaLog_Init(void)
     }
 }
 
-uint8_t KaoyaLog_Post(akm_log_event_t event,
+uint8_t GuoLog_Post(akm_log_event_t event,
                       int32_t arg0,
                       int32_t arg1,
                       int32_t arg2)
@@ -147,13 +147,13 @@ uint8_t KaoyaLog_Post(akm_log_event_t event,
     return 1u;
 }
 
-void KaoyaLogTask(void *argument)
+void GuoLogTask(void *argument)
 {
     akm_log_record_t record;
     char text[AKM_LOG_TEXT_SIZE];
 
     (void)argument;
-    KaoyaLog_Init();
+    GuoLog_Init();
     if (s_log_queue == NULL)
     {
         /* 堆不足时不能对空队列调用xQueueReceive；保持任务存活并暴露故障。 */
@@ -164,7 +164,7 @@ void KaoyaLogTask(void *argument)
         }
     }
     log_send_text("[AKM] async log ready\r\n");
-    (void)KaoyaLog_Post(AKM_LOG_EVENT_BOOT, 0, 0, 0);
+    (void)GuoLog_Post(AKM_LOG_EVENT_BOOT, 0, 0, 0);
 
     for (;;)
     {
@@ -178,26 +178,26 @@ void KaoyaLogTask(void *argument)
     }
 }
 
-uint32_t KaoyaLog_GetDropCount(void)
+uint32_t GuoLog_GetDropCount(void)
 {
     return s_drop_count;
 }
 
-uint32_t KaoyaLog_GetSentCount(void)
+uint32_t GuoLog_GetSentCount(void)
 {
     return s_sent_count;
 }
 
 #else
 
-void KaoyaLog_Init(void) {}
-void KaoyaLogTask(void *argument) { (void)argument; vTaskDelete(NULL); }
-uint8_t KaoyaLog_Post(akm_log_event_t event, int32_t arg0, int32_t arg1, int32_t arg2)
+void GuoLog_Init(void) {}
+void GuoLogTask(void *argument) { (void)argument; vTaskDelete(NULL); }
+uint8_t GuoLog_Post(akm_log_event_t event, int32_t arg0, int32_t arg1, int32_t arg2)
 {
     (void)event; (void)arg0; (void)arg1; (void)arg2;
     return 0u;
 }
-uint32_t KaoyaLog_GetDropCount(void) { return 0u; }
-uint32_t KaoyaLog_GetSentCount(void) { return 0u; }
+uint32_t GuoLog_GetDropCount(void) { return 0u; }
+uint32_t GuoLog_GetSentCount(void) { return 0u; }
 
 #endif

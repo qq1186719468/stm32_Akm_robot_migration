@@ -63,7 +63,7 @@
 ..\obj\i2c.o: ..\HARDWARE\oled.h
 ..\obj\i2c.o: ..\HARDWARE\usartx.h
 ..\obj\i2c.o: ..\HARDWARE\uart3_dma.h
-..\obj\i2c.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\i2c.o: ..\HARDWARE\guo_protocol.h
 ..\obj\i2c.o: ..\HARDWARE\adc.h
 ..\obj\i2c.o: ..\HARDWARE\can.h
 ..\obj\i2c.o: ..\HARDWARE\motor.h

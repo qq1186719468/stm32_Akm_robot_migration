@@ -40,4 +40,4 @@
 ..\obj\stm32f4xx_it.o: ..\FWLIB\inc\stm32f4xx_dcmi.h
 ..\obj\stm32f4xx_it.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
 ..\obj\stm32f4xx_it.o: ..\HARDWARE\uart3_dma.h
-..\obj\stm32f4xx_it.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\stm32f4xx_it.o: ..\HARDWARE\guo_protocol.h

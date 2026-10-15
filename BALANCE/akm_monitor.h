@@ -117,9 +117,9 @@ typedef struct
     uint32_t uart_overflow_count;
     uint32_t legacy_frame_count;
     uint32_t legacy_check_error_count;
-    uint32_t kaoya_frame_count;
-    uint32_t kaoya_error_count;
-    uint32_t kaoya_unsupported_count;
+    uint32_t guo_frame_count;
+    uint32_t guo_error_count;
+    uint32_t guo_unsupported_count;
     uint32_t dma_error_count;
     uint32_t usart_error_count;
     uint32_t tx_frame_count;

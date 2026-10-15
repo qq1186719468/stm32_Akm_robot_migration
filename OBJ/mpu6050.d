@@ -64,7 +64,7 @@
 ..\obj\mpu6050.o: ..\HARDWARE\oled.h
 ..\obj\mpu6050.o: ..\HARDWARE\usartx.h
 ..\obj\mpu6050.o: ..\HARDWARE\uart3_dma.h
-..\obj\mpu6050.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\mpu6050.o: ..\HARDWARE\guo_protocol.h
 ..\obj\mpu6050.o: ..\HARDWARE\adc.h
 ..\obj\mpu6050.o: ..\HARDWARE\can.h
 ..\obj\mpu6050.o: ..\HARDWARE\motor.h

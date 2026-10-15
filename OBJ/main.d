@@ -62,7 +62,7 @@
 ..\obj\main.o: ..\HARDWARE\oled.h
 ..\obj\main.o: ..\HARDWARE\usartx.h
 ..\obj\main.o: ..\HARDWARE\uart3_dma.h
-..\obj\main.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\main.o: ..\HARDWARE\guo_protocol.h
 ..\obj\main.o: ..\HARDWARE\adc.h
 ..\obj\main.o: ..\HARDWARE\can.h
 ..\obj\main.o: ..\HARDWARE\motor.h
@@ -78,5 +78,5 @@
 ..\obj\main.o: ..\BALANCE\akm_monitor.h
 ..\obj\main.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\main.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
-..\obj\main.o: ..\HARDWARE\kaoya_log.h
+..\obj\main.o: ..\HARDWARE\guo_log.h
 ..\obj\main.o: ..\BALANCE\akm_watchdog.h

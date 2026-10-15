@@ -39,7 +39,7 @@
 ..\obj\uart3_dma.o: ..\FWLIB\inc\stm32f4xx_dac.h
 ..\obj\uart3_dma.o: ..\FWLIB\inc\stm32f4xx_dcmi.h
 ..\obj\uart3_dma.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
-..\obj\uart3_dma.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\uart3_dma.o: ..\HARDWARE\guo_protocol.h
 ..\obj\uart3_dma.o: ..\BALANCE\system.h
 ..\obj\uart3_dma.o: ..\FreeRTOS\include\FreeRTOSConfig.h
 ..\obj\uart3_dma.o: ..\SYSTEM\sys\sys.h
@@ -78,4 +78,4 @@
 ..\obj\uart3_dma.o: ..\BALANCE\akm_monitor.h
 ..\obj\uart3_dma.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\uart3_dma.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
-..\obj\uart3_dma.o: ..\HARDWARE\kaoya_log.h
+..\obj\uart3_dma.o: ..\HARDWARE\guo_log.h

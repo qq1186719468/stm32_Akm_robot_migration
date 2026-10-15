@@ -461,29 +461,29 @@
               <FilePath>..\HARDWARE\uart3_dma.c</FilePath>
             </File>
             <File>
-              <FileName>kaoya_protocol.c</FileName>
+              <FileName>guo_protocol.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\HARDWARE\kaoya_protocol.c</FilePath>
+              <FilePath>..\HARDWARE\guo_protocol.c</FilePath>
             </File>
             <File>
-              <FileName>kaoya_status.c</FileName>
+              <FileName>guo_status.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\HARDWARE\kaoya_status.c</FilePath>
+              <FilePath>..\HARDWARE\guo_status.c</FilePath>
             </File>
             <File>
-              <FileName>kaoya_status_adapter.c</FileName>
+              <FileName>guo_status_adapter.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\HARDWARE\kaoya_status_adapter.c</FilePath>
+              <FilePath>..\HARDWARE\guo_status_adapter.c</FilePath>
             </File>
             <File>
-              <FileName>kaoya_uplink.c</FileName>
+              <FileName>guo_uplink.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\HARDWARE\kaoya_uplink.c</FilePath>
+              <FilePath>..\HARDWARE\guo_uplink.c</FilePath>
             </File>
             <File>
-              <FileName>kaoya_log.c</FileName>
+              <FileName>guo_log.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\HARDWARE\kaoya_log.c</FilePath>
+              <FilePath>..\HARDWARE\guo_log.c</FilePath>
             </File>
           </Files>
         </Group>

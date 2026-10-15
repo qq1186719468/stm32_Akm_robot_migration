@@ -63,7 +63,7 @@
 ..\obj\akm_watchdog.o: ..\HARDWARE\oled.h
 ..\obj\akm_watchdog.o: ..\HARDWARE\usartx.h
 ..\obj\akm_watchdog.o: ..\HARDWARE\uart3_dma.h
-..\obj\akm_watchdog.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\akm_watchdog.o: ..\HARDWARE\guo_protocol.h
 ..\obj\akm_watchdog.o: ..\HARDWARE\adc.h
 ..\obj\akm_watchdog.o: ..\HARDWARE\can.h
 ..\obj\akm_watchdog.o: ..\HARDWARE\motor.h

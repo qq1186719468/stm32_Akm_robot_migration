@@ -1,9 +1,9 @@
-#ifndef __KAOYA_STATUS_H
-#define __KAOYA_STATUS_H
+#ifndef __GUO_STATUS_H
+#define __GUO_STATUS_H
 
 #include <stdint.h>
 
-#include "kaoya_protocol.h"
+#include "guo_protocol.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,9 +13,9 @@ extern "C" {
  * 状态上报帧：AA55 + 6字节头字段 + 22字节payload + CRC16 + 66BB。
  * 当前模块只负责编码，不负责选择数据来源，也不直接启动UART DMA发送。
  */
-#define KAOYA_STATUS_MESSAGE_ID       (0x81u)
-#define KAOYA_STATUS_PAYLOAD_LENGTH   (22u)
-#define KAOYA_STATUS_FRAME_LENGTH     (34u)
+#define GUO_STATUS_MESSAGE_ID       (0x81u)
+#define GUO_STATUS_PAYLOAD_LENGTH   (22u)
+#define GUO_STATUS_FRAME_LENGTH     (34u)
 
 typedef struct
 {
@@ -30,10 +30,10 @@ typedef struct
     int16_t  ax_centi_g;       /* X轴加速度，0.01 g */
     int16_t  ay_centi_g;       /* Y轴加速度，0.01 g */
     int16_t  az_centi_g;       /* Z轴加速度，0.01 g */
-} kaoya_status_payload_t;
+} guo_status_payload_t;
 
 /* 成功返回34，参数为空或输出空间不足返回0；所有16位字段显式按小端编码。 */
-uint16_t KaoyaStatus_BuildFrame(const kaoya_status_payload_t *status,
+uint16_t GuoStatus_BuildFrame(const guo_status_payload_t *status,
                                 uint8_t sequence,
                                 uint8_t *output,
                                 uint16_t output_capacity);
@@ -42,4 +42,4 @@ uint16_t KaoyaStatus_BuildFrame(const kaoya_status_payload_t *status,
 }
 #endif
 
-#endif /* __KAOYA_STATUS_H */
+#endif /* __GUO_STATUS_H */

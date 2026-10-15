@@ -63,7 +63,7 @@
 ..\obj\led.o: ..\HARDWARE\oled.h
 ..\obj\led.o: ..\HARDWARE\usartx.h
 ..\obj\led.o: ..\HARDWARE\uart3_dma.h
-..\obj\led.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\led.o: ..\HARDWARE\guo_protocol.h
 ..\obj\led.o: ..\HARDWARE\adc.h
 ..\obj\led.o: ..\HARDWARE\can.h
 ..\obj\led.o: ..\HARDWARE\motor.h

@@ -17,7 +17,7 @@ Update：2022-05-05
 All rights reserved
 ***********************************************/
 #include "system.h"
-#include "kaoya_log.h"
+#include "guo_log.h"
 #include "akm_watchdog.h"
 
 //Task priority    //任务优先级
@@ -83,8 +83,8 @@ void start_task(void *pvParameters)
 	#endif
 	#if AKM_LOG_ENABLE
 	    /* 日志任务低优先级运行；控制任务只投递固定长度事件，不等待串口。 */
-	    KaoyaLog_Init();
-	    xTaskCreate(KaoyaLogTask, "AkmLog", AKM_LOG_TASK_STK_SIZE,
+	    GuoLog_Init();
+	    xTaskCreate(GuoLogTask, "AkmLog", AKM_LOG_TASK_STK_SIZE,
 	                NULL, AKM_LOG_TASK_PRIO, &s_log_task_handle);
 	#endif
     /* 看门狗任务负责心跳诊断；健康门控通过后启动并刷新硬件IWDG。 */

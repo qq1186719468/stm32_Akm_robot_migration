@@ -121,8 +121,8 @@ static void draw_snapshot(const akm_status_snapshot_t *snapshot)
     index = append_line_value(line, "SERVO:", snapshot->servo_ccr2_pwm);
     index = append_text(line, index, "us"); line[index] = '\0'; draw_line(6u, line);
 
-    index = append_line_value(line, "F:", snapshot->kaoya_frame_count);
-    index = append_line_value(line, " E:", snapshot->kaoya_error_count); line[index] = '\0'; draw_line(7u, line);
+    index = append_line_value(line, "F:", snapshot->guo_frame_count);
+    index = append_line_value(line, " E:", snapshot->guo_error_count); line[index] = '\0'; draw_line(7u, line);
     index = append_line_value(line, "DMA:", snapshot->dma_error_count);
     index = append_line_value(line, " TX:", snapshot->tx_complete_count); line[index] = '\0'; draw_line(8u, line);
     index = append_line_value(line, "HEAP:", (int32_t)snapshot->free_heap_bytes);

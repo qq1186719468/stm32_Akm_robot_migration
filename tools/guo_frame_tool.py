@@ -1,8 +1,8 @@
-"""Build and optionally send a KaoYa AA55 velocity frame.
+"""Build and optionally send a Guo AA55 velocity frame.
 
 Examples (PowerShell):
-  python tools/kaoya_frame_tool.py --vx 300 --wz 0
-  python tools/kaoya_frame_tool.py --port COM7 --vx 300 --wz 150 --repeat 10
+  python tools/guo_frame_tool.py --vx 300 --wz 0
+  python tools/guo_frame_tool.py --port COM7 --vx 300 --wz 150 --repeat 10
 
 The tool is intentionally dependency-free for frame generation.  Serial
 transmission uses pyserial only when --port is supplied.
@@ -16,8 +16,8 @@ import sys
 import time
 
 
-KAOYA_STATUS_FRAME_LENGTH = 34
-KAOYA_STATUS_PAYLOAD_LENGTH = 22
+GUO_STATUS_FRAME_LENGTH = 34
+GUO_STATUS_PAYLOAD_LENGTH = 22
 
 
 def crc16_ccitt_false(data):
@@ -38,14 +38,14 @@ def make_velocity_frame(vx_mmps, vy_mmps, wz_mradps, sequence=0):
 
 def parse_status_frame(frame):
     """校验并解码迁移固件的34字节状态帧；非法帧返回None。"""
-    if len(frame) != KAOYA_STATUS_FRAME_LENGTH:
+    if len(frame) != GUO_STATUS_FRAME_LENGTH:
         return None
     if frame[0:2] != b"\xAA\x55" or frame[-2:] != b"\x66\xBB":
         return None
     if frame[2] != 1 or frame[3] != 0x81:
         return None
     payload_len = frame[6] | (frame[7] << 8)
-    if payload_len != KAOYA_STATUS_PAYLOAD_LENGTH:
+    if payload_len != GUO_STATUS_PAYLOAD_LENGTH:
         return None
     body_end = 8 + payload_len
     expected_crc = frame[body_end] | (frame[body_end + 1] << 8)
@@ -101,7 +101,7 @@ def run_self_test():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="KaoYa AA55 velocity-frame tester")
+    parser = argparse.ArgumentParser(description="Guo AA55 velocity-frame tester")
     parser.add_argument("--vx", type=int, default=0, help="forward speed, mm/s")
     parser.add_argument("--vy", type=int, default=0, help="lateral speed, mm/s")
     parser.add_argument("--wz", type=int, default=0, help="yaw rate, mrad/s")

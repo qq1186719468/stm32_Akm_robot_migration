@@ -63,7 +63,7 @@
 ..\obj\robot_select_init.o: ..\HARDWARE\oled.h
 ..\obj\robot_select_init.o: ..\HARDWARE\usartx.h
 ..\obj\robot_select_init.o: ..\HARDWARE\uart3_dma.h
-..\obj\robot_select_init.o: ..\HARDWARE\kaoya_protocol.h
+..\obj\robot_select_init.o: ..\HARDWARE\guo_protocol.h
 ..\obj\robot_select_init.o: ..\HARDWARE\adc.h
 ..\obj\robot_select_init.o: ..\HARDWARE\can.h
 ..\obj\robot_select_init.o: ..\HARDWARE\motor.h
